@@ -1,14 +1,16 @@
 #include "../api.h"
 #include "inputExample.h"
+#include "outputExample.h"
 
 // 定义和注册TestAdd的测试用例
 API_CLASS {
     auto ip = *input;
-    cout << ip.sd1 << endl;
-    cout << ip.sd2 << endl;
-    cout << ip.temp.num << endl;
-    cout << ip.temp.abs << endl;
+    output->sd1 = ip.sd1;
+    output->sd2 = ip.sd2;
+    output->temp.num = ip.temp.num;
+    output->temp.abs = ip.temp.abs;
     cout << "TestAdd::Run" << endl;
+    return 1;
 }
 
 

@@ -13,19 +13,24 @@ public:
     class name : public TestCase { \
     public: \
         Input_##name *input;\
+        Output_##name *output;\
         name() {\
             apiName = #name; \
             input = new Input_##name(); \
+            output = new Output_##name(); \
         } \
         void SetUp() override; \
         void TearDown() override; \
-        void startTest() override; \
+        int startTest() override; \
         void setJson(string json) { \
             this->input->json = json; \
         } \
         Input* getInput() override { \
             return dynamic_cast<Input*>(input); \
         } \
+        Output* getOutput() override { \
+            return dynamic_cast<Output*>(output); \
+        } \
     }; \
     static TestCaseRegistrar registrar_##name(new name()); \
-    void name::startTest()
+    int name::startTest()

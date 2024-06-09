@@ -36,22 +36,19 @@ class myconnect{
     int myread(){
         int num=0;
         string res;
-        cout<<"处理中"<<endl;
-        std::cout<<num<<endl;
         num=read(sockfd,buffer,buffsize-1);
         std::cout<<num<<endl;
         while(num>0){
             for(int i=0;i<num;i++){
                 if(buffer[i]=='#'){
-                    cout<<res<<endl;
+                    cout<<"返回结果是："<<endl<<res<<endl;
                     return 1;
                 }
                 res+=buffer[i];
             }
             num=read(sockfd,buffer,buffsize-1);
-            cout<<num<<endl;
         }
-        cout<<res<<endl;
+        
         return 1;
     }
     int mywrite(string Request){
@@ -76,8 +73,6 @@ class myconnect{
         if(send(sockfd,buf,length+1,0)<0){
             cout<<"发送请求失败"<<endl;
             return -1;
-        }else{
-            cout<<"处理中"<<endl;
         }
         return 1;
     }

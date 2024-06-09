@@ -8,8 +8,12 @@ int main() {
     cout<<mc.init()<<endl;
     cout<<"开始执行\n>>";
     mc.run();
-    mc.mywrite("Api1?sd1=1&temp={num=100&abs=10}&sd2=2");
-    if(mc.myread()==1)cout<<"执行成功\n>>";
-    else cout<<"执行失败，未获取返回值\n>>";
+    while(1){
+        string s;
+        cin>>s;
+        mc.mywrite(s);
+        if(mc.myread()==1)cout<<"执行成功\n>>";
+        else cout<<"执行失败，未获取返回值\n>>";
+    }
     return 0;
 }

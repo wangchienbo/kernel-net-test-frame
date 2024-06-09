@@ -14,6 +14,8 @@ class Temp : public Input{
         void parse() override {
             SET_PARAMS(num, true);
             SET_PARAMS(abs, true);
+            cout<<num<<endl;
+            cout<<abs<<endl;
         }
 };
 class API_INPUT: public Input{

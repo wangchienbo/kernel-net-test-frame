@@ -6,5 +6,4 @@ class apiRunReq
 {
     public:
         string json;
-        string apiName;
 };

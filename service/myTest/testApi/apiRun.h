@@ -1,5 +1,4 @@
 #include "allApi.h"
-#include "api.h"
 class ApiRun {
     public:
         apiRunResp *resp;

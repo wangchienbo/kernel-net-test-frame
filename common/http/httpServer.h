@@ -1,3 +1,4 @@
+#pragma once
 #include <sstream>
 #include <unordered_map>
 #include <functional>
@@ -7,13 +8,13 @@
 class HttpServer : public epollServer {
     public:
         myResponseThreadPool* responsePool;
-        using Handler = std::function<void(const HttpRequest&)>;
+        using Handler = std::function<void(HttpRequest&)>;
         HttpServer(int port) : epollServer(port){
             myResponseThreadPool* responsePool_ = new myResponseThreadPool();
             pool = new ThreadPool(responsePool_);
             responsePool = responsePool_;
         }
-        void registerPath(const std::string& path,const std::string& method, const Handler& handler) {
+        void registerPath(const std::string& path,const std::string& method, Handler handler) {
             if(method == "GET")
                 responsePool->pathHandlersGet[path] = handler;
             else if(method == "POST")

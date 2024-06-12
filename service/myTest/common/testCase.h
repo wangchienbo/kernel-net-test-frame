@@ -11,9 +11,11 @@ public:
     virtual void TearDown() = 0; // 在每个测试用例后执行
     virtual int startTest() = 0; // 执行测试用例的主体
     virtual void setJson(string json) = 0;
+    virtual void clear() = 0;
     virtual Input* getInput() = 0;
     virtual Output* getOutput() = 0;
     virtual apiRunResp* run(string json) {
+        clear();
         auto resp = new apiRunResp();
         auto input_ = this->getInput();
         input_->json = json;
@@ -25,14 +27,11 @@ public:
         if(isSucess){
             resp->code = SUCCESSCode;
             output_->unparse();
-            int resLen=output_->resStr.length();
-            if(resLen>0&&output_->resStr[resLen-1]=='&'){
-                output_->resStr=output_->resStr.substr(0,resLen-1);
-            }
+            int resLen=output_->json.length();
         } else {
             resp->code = testErrorCode;
         }
-        resp->data = output_->resStr;
+        resp->data = output_->json;
         return resp;
     }
     string json;

@@ -1,3 +1,4 @@
+#pragma once
 #include <sstream>
 #include <map>
 class HttpRequest {
@@ -11,6 +12,7 @@ class HttpRequest {
 
     public:
         std::string response;
+        std::string getMethod() const;
         void parse_request(const std::string& request) {
         }
 
@@ -25,5 +27,11 @@ class HttpRequest {
             this->version = version;
             this->headers = headers;
             this->body = body;
+        }
+        std::string getBody() {
+            return body;
+        }
+        void setResponse(std::string response){
+            this->response = response;
         }
 };

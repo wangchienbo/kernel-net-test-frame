@@ -1,5 +1,4 @@
-#include "allApi.h"
-#include "api.h"
+#include "myTest/testApi/allApi.h"
 class ApiRun {
     public:
         apiRunResp *resp;

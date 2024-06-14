@@ -95,6 +95,17 @@
     "regex": "cpp",
     "bitset": "cpp",
     "ctime": "cpp",
-    "random": "cpp"
+    "random": "cpp",
+    "string": "cpp",
+    "atomic": "cpp",
+    "chrono": "cpp",
+    "condition_variable": "cpp",
+    "list": "cpp",
+    "future": "cpp",
+    "mutex": "cpp",
+    "ratio": "cpp",
+    "system_error": "cpp",
+    "thread": "cpp",
+    "map": "cpp"
   }
 }

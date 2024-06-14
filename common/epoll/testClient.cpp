@@ -10,7 +10,7 @@ int main() {
     mc.run();
     while(1){
         string s;
-        cin>>s;
+        std::getline(std::cin,s);
         mc.mywrite(s);
         if(mc.myread()==1)cout<<"执行成功\n>>";
         else cout<<"执行失败，未获取返回值\n>>";

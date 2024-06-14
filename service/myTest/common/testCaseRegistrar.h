@@ -25,6 +25,12 @@ public:
         void setJson(string json) { \
             this->input->json = json; \
         } \
+        void clear() {\
+            free(input);\
+            free(output);\
+            input=new Input_##name();\
+            output=new Output_##name();\
+        }\
         Input* getInput() override { \
             return dynamic_cast<Input*>(input); \
         } \

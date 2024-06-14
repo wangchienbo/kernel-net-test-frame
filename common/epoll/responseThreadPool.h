@@ -47,12 +47,12 @@ class ResponseThreadPool{
                 });
             }
         }
-        void processResult(pair<int,std::vector<uint8_t>> res){
+        virtual void processResult(pair<int,std::vector<uint8_t>> res){
             // process the result
             std::string str((res.second).begin(),(res.second).end());
             result.msg = str;
         }
-        void sendRes(int fd){
+        virtual void sendRes(int fd){
             string res="HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 11\r\n\r\n";
             res+="\n";
             res+=result.msg+"#";

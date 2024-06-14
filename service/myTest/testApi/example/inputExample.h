@@ -3,8 +3,6 @@
 #define API_NAME Api1
 #define API_CLASS TEST_CASE(Api1)
 #define API_INPUT Input_Api1
-#define SET_PARAMS(key, required) setParams(&key, #key, required)
-#define SET_PARAMS_CLASS(key, required) setParamsClass(key, #key, required)
 class Temp : public Input{
     public:
         Temp(){

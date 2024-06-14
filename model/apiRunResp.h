@@ -9,4 +9,5 @@ class apiRunResp
     public:
         int code;
         string data;
+        string json;
 };

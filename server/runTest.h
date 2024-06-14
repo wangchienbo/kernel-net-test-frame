@@ -1,6 +1,6 @@
 #include "../common/common.h"
 #include "../model/model.h"
-#include "../service/myTest/testApi/apiRun.h"
+#include "../service/service.h"
 // extern void AddTest_(const HttpRequest& req);
 void RunTest(HttpRequest& req){
     cout<<"AddTest"<<endl;

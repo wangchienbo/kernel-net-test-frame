@@ -1,7 +1,8 @@
 #pragma once
 #include "head.h"
+#include "../math.h"
 class Response {
     public:
-        int status;
+        int code;
         string msg;
 };

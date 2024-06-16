@@ -1,6 +1,7 @@
 #pragma once
 #include <sstream>
 #include <map>
+#include "httpResponse.h"
 class HttpRequest {
     private:
         std::string method;
@@ -11,7 +12,7 @@ class HttpRequest {
         
 
     public:
-        std::string response;
+        HttpResponse response;
         std::string getMethod() const;
         void parse_request(const std::string& request) {
         }
@@ -31,7 +32,8 @@ class HttpRequest {
         std::string getBody() {
             return body;
         }
-        void setResponse(std::string response){
-            this->response = response;
+        void setResponse(int code,std::string response){
+            this->response.code = code;
+            this->response.msg = response;
         }
 };

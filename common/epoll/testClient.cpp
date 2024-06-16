@@ -12,7 +12,8 @@ int main() {
         string s;
         std::getline(std::cin,s);
         mc.mywrite(s);
-        if(mc.myread()==1)cout<<"执行成功\n>>";
+        string res;
+        if(mc.myread(res)==1)cout<<"执行成功\n>>";
         else cout<<"执行失败，未获取返回值\n>>";
     }
     return 0;

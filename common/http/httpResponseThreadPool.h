@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "../epoll/responseThreadPool.h"
 #include "httpRequest.h"
+#include "httpResponse.h"
 class myResponseThreadPool: public ResponseThreadPool {
     public:
         using Handler = std::function<void(HttpRequest&)>;
@@ -75,8 +76,16 @@ class myResponseThreadPool: public ResponseThreadPool {
             body = std::string(std::istreambuf_iterator<char>(sstr), {});
             std::cout << "body: " << body << std::endl;
         }
-        virtual void processResult(pair<int,std::vector<uint8_t>> res){
+        Response processResult(pair<int,std::vector<uint8_t>> res){
+            HttpResponse result;
             // process the result
+            cout<<res.second.size()<<endl;
+            if(res.second.size() == 0){
+                cout<<"请求为空"<<endl;
+                result.code = 404;
+                result.msg = "request is empty";
+                return result;
+            }
             std::string strWithEscapeSequences(res.second.begin(), res.second.end());
             std::string str = replaceEscapeSequences(strWithEscapeSequences);
             cout<<"解析"<< str <<endl;
@@ -110,12 +119,21 @@ class myResponseThreadPool: public ResponseThreadPool {
                 }
             }
             cout<<"处理完毕"<<endl;
-            result.msg = req.response;
+            result.msg = req.response.msg;
+            result.code = req.response.code;
+            return result;
         }
-        virtual void sendRes(int fd){
-            string res="HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 11\r\n\r\n";
+        virtual void sendRes(int fd, Response resp){
+            HttpResponse *result = static_cast<HttpResponse*>(&resp);
+            cout<<"发送"<<result->msg<<endl;
+            string res;
+            if(result->code==200){
+                 res="HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: "+std::to_string(result->msg.size())+"\r\n\r\n";
+            }else{
+                 res="HTTP/1.1 "+ std::to_string(result->code) +" OK\r\nContent-Type: text/html\r\nContent-Length: "+std::to_string(result->msg.size())+"\r\n\r\n";
+            }
             res+="\n";
-            res+=result.msg+"#";
+            res+=result->msg+"#";
             cout<<"返回"<<res<<endl;
             send(fd, res.c_str(), res.size(), 0);
         }

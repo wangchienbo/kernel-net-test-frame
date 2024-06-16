@@ -10,6 +10,7 @@ class addTemplateReq:public apiRunReq{
         string testType;
         string testCase;
         void parse(){
+
             SET_PARAMS(templateName ,true);
             SET_PARAMS(testType ,true);
             SET_PARAMS(testCase ,true);
@@ -22,14 +23,11 @@ class addTemplateReq:public apiRunReq{
 };
 class addTemplateResp:public apiRunResp{
     public:
-        int code;
         string data;
         void parse(){
-            SET_PARAMS(code ,true);
             SET_PARAMS(data ,true);
         }
         void unparse(){
-            SET_OUTPUT(code);
             SET_OUTPUT(data);
             END_UNPARSE
         }

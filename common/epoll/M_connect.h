@@ -14,9 +14,10 @@ class myconnect{
     char buffer[buffsize];
     int sockfd;
     myconnect(string go_ip_s,int go_port_s){
+        cout<<"初始化"<<go_ip_s<<go_port_s<<endl;
         go_ip.s_addr=inet_addr((char*)go_ip_s.c_str());
-        cout<<go_port_s<<endl;
         go_port=htons(go_port_s);
+        cout<<"初始化完毕"<<go_port<<endl;
     }
     int init(){
         memset(&service_addr,0,sizeof(service_addr));
@@ -26,30 +27,26 @@ class myconnect{
         return sockfd=socket(AF_INET,SOCK_STREAM,0);
     }
     int run(){
-        service_addr.sin_addr.s_addr=inet_addr("127.0.0.1");
+        service_addr.sin_addr.s_addr=go_ip.s_addr;
         if(connect(sockfd,(struct sockaddr*)&service_addr,sizeof(service_addr))<0){
-            error_handling("connect() error!");
-            return -1;
+            throw connectExpection("连接失败");
         }
         return 1;
     }
-    int myread(){
+    int myread(string &res){
         int num=0;
-        string res;
         num=read(sockfd,buffer,buffsize-1);
         std::cout<<num<<endl;
         while(num>0){
             for(int i=0;i<num;i++){
                 if(buffer[i]=='#'){
-                    cout<<"返回结果是："<<endl<<res<<endl;
                     return 1;
                 }
                 res+=buffer[i];
             }
             num=read(sockfd,buffer,buffsize-1);
         }
-        
-        return 1;
+        throw connectExpection("读取失败");
     }
     int mywrite(string Request){
         int error=0;
@@ -57,9 +54,9 @@ class myconnect{
         if(getsockopt(sockfd,SOL_SOCKET,SO_ERROR,&error,&len)==0){
             if(errno!=0){
                 cout<<"未连接，尝试重新连接..."<<endl;
+                init();
                 if(run()<0){
-                    cout<<"连接失败"<<endl;
-                    return -1;
+                    throw connectExpection("重新连接失败");
                 }
             }
         }
@@ -70,9 +67,9 @@ class myconnect{
         }
         buf[length]='#';
         buf[length+1]='\0';
+        cout<<sockfd<<endl;
         if(send(sockfd,buf,length+1,0)<0){
-            cout<<"发送请求失败"<<endl;
-            return -1;
+            throw connectExpection("发送失败");
         }
         return 1;
     }

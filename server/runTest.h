@@ -17,6 +17,6 @@ void RunTest(HttpRequest& req){
     resp_.code = res.code;
     resp_.data = res.data;
     resp_.unparse();
-    req.setResponse(resp_.json);
+    req.setResponse(resp_.code,resp_.json);
     return;
 }

@@ -1,6 +1,10 @@
 #pragma once
 #include <string>
 #include <stack>
+#include <iostream>
+#include <sstream>
+#include "http/http.h"
+#include "myExpection/myExpection.h"
 #define SET_PARAMS(key, required) setParams(&key, json, #key, required)
 #define SET_PARAMS_CLASS(key, required) setParamsClass(key, json, #key, required)
 #define SET_OUTPUT(key) setOutput(&key, json,std::string(#key))
@@ -26,6 +30,7 @@ void setParams(T t, string json_, string key, bool required) {
     string s1= getparams(json_,key);
     cout<<"解析"<<json_<<" 解析key为 "<<key<<" 解析结果为 "<<s1<<endl;
     std::stringstream ss;
+    ss.clear();
     ss << s1;
     ss >> *t;
     if (ss.fail()) {

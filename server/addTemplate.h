@@ -7,10 +7,19 @@ void addTemplate(HttpRequest& req){
     addTemplateReq req_;
     addTemplateResp resp_;
     req_.json = req.getBody();
-    req_.parse();
+    try{
+        req_.parse();
+    }
+    catch(parseExpection e){
+        resp_.code = 400;
+        resp_.data = e.what();
+        resp_.unparse();
+        req.setResponse(resp_.code,resp_.json);
+        return ;
+    }
     string data = addTemplateService(req_);
     if(data=="Invalid test type"){
-        resp_.code = 400;
+        resp_.code = 500;
         resp_.data = data;
     }
     else{
@@ -18,6 +27,6 @@ void addTemplate(HttpRequest& req){
         resp_.data = data;
     }
     resp_.unparse();
-    req.setResponse(resp_.json);
-    return;
+    req.setResponse(resp_.code,resp_.json);
+    return ;
 }

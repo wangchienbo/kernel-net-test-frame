@@ -27,7 +27,6 @@ class ResponseThreadPool{
     public:
         MessageQueue& taskQueue;
         ResultQueue& resultQueue;
-        Response result;
         ResponseThreadPool() : stop(false), taskQueue(MessageQueue::Instance()), resultQueue(ResultQueue::Instance()){
             // Create worker threads
             // resultQueue.respool=this;
@@ -39,25 +38,17 @@ class ResponseThreadPool{
                         if (stop) {
                             return;
                         }
-                        auto res = resultQueue.getResult();
+                        auto req = resultQueue.getResult();
                         condition.notify_one();
-                        processResult(res);
-                        sendRes(res.first);
+                        Response result = processResult(req);
+                        sendRes(req.first,result);
                     }
                 });
             }
         }
-        virtual void processResult(pair<int,std::vector<uint8_t>> res){
-            // process the result
-            std::string str((res.second).begin(),(res.second).end());
-            result.msg = str;
+        virtual Response processResult(pair<int,std::vector<uint8_t>> res){
         }
-        virtual void sendRes(int fd){
-            string res="HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 11\r\n\r\n";
-            res+="\n";
-            res+=result.msg+"#";
-            cout<<"返回"<<res<<endl;
-            send(fd, res.c_str(), res.size(), 0);
+        virtual void sendRes(int fd, Response res){
         }
     void addResult(pair<int,std::vector<uint8_t>> result) {
         std::lock_guard<std::mutex> lock(queue_mutex);

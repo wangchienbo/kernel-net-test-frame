@@ -26,7 +26,7 @@ public:
         service_addr.sin_port = htons(port);
         service_addr.sin_addr.s_addr = htonl(INADDR_ANY);
         listenfd = socket(AF_INET, SOCK_STREAM, 0);
-
+        cout<<listenfd<<endl;
         int err_log = ::bind(listenfd, (struct sockaddr*)&service_addr, sizeof(service_addr));
         if (err_log != 0) {
             perror("bind");
@@ -76,6 +76,7 @@ public:
                     struct sockaddr_in client_addr;
                     socklen_t len = sizeof(client_addr);
                     int sockfd = accept(listenfd, (struct sockaddr*)&client_addr, &len);
+                    cout<<sockfd<<endl;
                     if (sockfd == -1) {
                         perror("accept");
                         continue;
@@ -89,6 +90,8 @@ public:
                         exit(EXIT_FAILURE);
                     }
                 } else {
+                    cout<<listenfd<<endl;
+                    cout<<events[i].data.fd<<endl;
                     pool->addTask(events[i].data.fd);
                 }
             }

@@ -13,7 +13,6 @@ API_CLASS {
     return 1;
 }
 
-
 void API_NAME::SetUp() {
     // 准备测试环境
     cout << "TestAdd::SetUp" << endl;

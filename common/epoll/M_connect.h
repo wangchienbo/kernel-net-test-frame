@@ -13,7 +13,7 @@ public:
     char buffer[buffsize];
     int sockfd;
     myconnect(string go_ip_s, int go_port_s) {
-        cout << "初始化" << go_ip_s << go_port_s << endl;
+        cout << "初始化" << go_ip_s << ":" << go_port_s << endl;
         go_ip.s_addr = inet_addr((char *)go_ip_s.c_str());
         go_port = htons(go_port_s);
         cout << "初始化完毕" << go_port << endl;

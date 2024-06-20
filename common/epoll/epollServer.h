@@ -10,13 +10,15 @@ public:
     int listenfd;
     int epollfd; // 使用epoll
     static const int MAX_EVENTS = 10;
-    
-    ThreadPool* pool;
+
+    ThreadPool *pool;
     int port;
-    epollServer(ResponseThreadPool* responsePool_, int port) : port(port) {
+    epollServer(ResponseThreadPool *responsePool_, int port) :
+        port(port) {
         pool = new ThreadPool(responsePool_);
     }
-    epollServer(int port) : port(port) {
+    epollServer(int port) :
+        port(port) {
         pool = new ThreadPool(new ResponseThreadPool());
     }
 
@@ -26,8 +28,8 @@ public:
         service_addr.sin_port = htons(port);
         service_addr.sin_addr.s_addr = htonl(INADDR_ANY);
         listenfd = socket(AF_INET, SOCK_STREAM, 0);
-        cout<<listenfd<<endl;
-        int err_log = ::bind(listenfd, (struct sockaddr*)&service_addr, sizeof(service_addr));
+        cout << listenfd << endl;
+        int err_log = ::bind(listenfd, (struct sockaddr *)&service_addr, sizeof(service_addr));
         if (err_log != 0) {
             perror("bind");
             exit(EXIT_FAILURE);
@@ -65,9 +67,7 @@ public:
                 exit(EXIT_FAILURE);
             }
             for (int i = 0; i < num_fds; ++i) {
-                if ((events[i].events & EPOLLERR) ||
-                    (events[i].events & EPOLLHUP) ||
-                    (!(events[i].events & EPOLLIN))) {
+                if ((events[i].events & EPOLLERR) || (events[i].events & EPOLLHUP) || (!(events[i].events & EPOLLIN))) {
                     fprintf(stderr, "连接已关闭");
                     close(events[i].data.fd);
                     continue;
@@ -75,8 +75,8 @@ public:
                     cout << "监听到请求" << endl;
                     struct sockaddr_in client_addr;
                     socklen_t len = sizeof(client_addr);
-                    int sockfd = accept(listenfd, (struct sockaddr*)&client_addr, &len);
-                    cout<<sockfd<<endl;
+                    int sockfd = accept(listenfd, (struct sockaddr *)&client_addr, &len);
+                    cout << sockfd << endl;
                     if (sockfd == -1) {
                         perror("accept");
                         continue;
@@ -90,8 +90,8 @@ public:
                         exit(EXIT_FAILURE);
                     }
                 } else {
-                    cout<<listenfd<<endl;
-                    cout<<events[i].data.fd<<endl;
+                    cout << listenfd << endl;
+                    cout << events[i].data.fd << endl;
                     pool->addTask(events[i].data.fd);
                 }
             }
@@ -101,7 +101,7 @@ public:
     void runall() {
         cout << "初始化" << endl;
         cout << init() << endl;
-        cout << "正在监听："<< port << endl;
+        cout << "正在监听：" << port << endl;
         cout << mylisten() << endl;
         cout << ntohs(service_addr.sin_port) << " " << ntohl(service_addr.sin_addr.s_addr) << endl;
         cout << "开始执行" << endl;

@@ -2,8 +2,7 @@
 #include <string>
 #include <iostream>
 using namespace std;
-class apiRunReq
-{
-    public:
-        string json;
+class apiRunReq {
+public:
+    string json;
 };

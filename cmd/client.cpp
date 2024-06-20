@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <tuple>
 #include <vector>
 #include <sstream>
 #include <map>
@@ -65,7 +66,9 @@ bool isValidPort(const std::string &port) {
 }
 
 int main(int argc, char *argv[]) {
-    setpgid(0, 0);
+    pid_t pid = getpid();
+    pid_t pgid = getpgid(pid);
+    setpgid(pid, pgid);
     std::vector<std::pair<std::string, int>> ips;
 
     for (int i = 1; i < argc; i++) {
@@ -98,6 +101,7 @@ int main(int argc, char *argv[]) {
     }
     std::cout << "初始化完毕";
     std::cout << "请输入要执行的命令和数据\n>>";
+    std::cin.tie(0);
     while (1) {
         int num = 0;
         string runName, data, s;

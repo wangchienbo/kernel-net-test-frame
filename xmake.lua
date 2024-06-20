@@ -3,7 +3,7 @@ if is_mode("release") then
     set_optimize("fastest")
 end
 set_languages("c++11")
-add_cxxflags("-Wall", "-Wextra", "-pthread", "-std=c++11")
+add_cxxflags("-Wall", "-Wextra", "-pthread")
 set_allowedplats("windows", "linux", "macosx")
 set_toolchains("gcc")
 

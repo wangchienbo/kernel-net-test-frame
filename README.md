@@ -14,8 +14,6 @@
     ```
     生成编译命令供`clangd`使用
 
-- 推荐使用`zsh`+`on my zsh`
-
 ## 使用xmake构建和运行项目
 
 - 配置和构建整个项目
@@ -23,17 +21,28 @@
     xmake config -y
     xmake build
     ```
-- 构建指定目标
-    ```
+- 构建和运行指定目标
+    ```shell
     xmake build [target-name]
+    xmake run [target-name]
     ```
-- 启动服务
-    ```shell
-    xmake run service
+- 调试代码
     ```
-- 启动myTest中定义的测试
+    xmake config -m debug
+    xmake
+    xmake run -d [target-name]
+    ```
+- 启动server
     ```shell
-    xmake run myTest
+    xmake run server
+    ```
+- 启动client
+    ```shell
+    xmake run client
+    ```
+- 启动servive文件夹中定义的测试
+    ```shell
+    xmake run test
     ```
 - 格式化所有代码
     ```shell

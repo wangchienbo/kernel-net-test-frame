@@ -1,4 +1,7 @@
 add_rules("mode.debug", "mode.release")
+if is_mode("release") then
+    set_optimize("fastest")
+end
 set_languages("c++11")
 add_cxxflags("-Wall", "-Wextra", "-pthread", "-std=c++11")
 set_allowedplats("windows", "linux", "macosx")

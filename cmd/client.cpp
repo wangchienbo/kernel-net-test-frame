@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
             std::string ip = arg.substr(0, pos);
             std::string port = arg.substr(pos + 1);
             if (isValidIP(ip) && isValidPort(port)) {
-                ips.push_back(std::make_pair(ip, std::stoi(port)));
+                ips.emplace_back(ip, std::stoi(port));
             } else {
                 std::cout << "ip或端口错误,ip：" << ip << "端口：" << port << endl;
                 return 0;
@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
     int n = ips.size();
     for (int i = 0; i < n; i++) {
         std::pair<std::string, int> ip = ips[i];
-        httpClient *c = new httpClient(ip.first, ip.second);
+        auto *c = new httpClient(ip.first, ip.second);
         try {
             c->init();
             c->run();

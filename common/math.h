@@ -3,8 +3,10 @@
 #include <stack>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 #include "http/http.h"
 #include "myExpection/myExpection.h"
+
 #define SET_PARAMS(key, required) setParams(&key, json, #key, required)
 #define SET_PARAMS_CLASS(key, required) setParamsClass(key, json, #key, required)
 #define SET_PARAMS_LIST(key, required) setParamsList(key, json, #key, required)
@@ -126,7 +128,17 @@ bool findOk(string url,string key_qual, size_t start_pos){
     }
     return false;
 }
+std::string removeWhitespace(const std::string& input) {
+    std::string result;
+    for (char ch : input) {
+        if (!std::isspace(static_cast<unsigned char>(ch))) {
+            result += ch;
+        }
+    }
+    return result;
+}
 std::string getparams(string url, const std::string& key) {
+    url=removeWhitespace(url);
     if(url.length() > 0 && (url[0] == '{' || url[0] == '[' || url[0] == '(')){
         url = url.substr(1, url.length() - 2);
     }

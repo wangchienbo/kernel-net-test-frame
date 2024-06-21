@@ -22,10 +22,14 @@ class API_INPUT: public Input{
         }
         int sd1=0;
         int sd2=0;
+        vector<int> sd3;
+        vector<Temp> temps;
         Temp temp;
         void parse() override{
             SET_PARAMS(sd1, true);
             SET_PARAMS(sd2, true);
             SET_PARAMS_CLASS(temp, true);
+            SET_PARAMS_LIST(sd3, true);
+            SET_PARAMS_LIST_CLASS(temps, true);
         }
 };

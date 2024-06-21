@@ -73,6 +73,12 @@ class myResponseThreadPool: public ResponseThreadPool {
             for (const auto& header : headers) {
                 std::cout << header.first << ": " << header.second << std::endl;
             }
+            if(method == "GET" || method == "DELETE"){
+                std::string body;
+                body = url.find("?") == std::string::npos ? "" : url.substr(url.find("?") + 1);
+                std::cout << "body: " << body << std::endl;
+                return;
+            }
             body = std::string(std::istreambuf_iterator<char>(sstr), {});
             std::cout << "body: " << body << std::endl;
         }

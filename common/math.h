@@ -83,6 +83,10 @@ template <typename T>
 void setParams(T t, string json_, string key, bool required) {
     string s1= getparams(json_,key);
     s1=removeQuotes(s1);
+    if(s1==""){
+        if(required) throw parseExpection("parse error");
+        return;
+    }
     cout<<"解析"<<json_<<" 解析key为 "<<key<<" 解析结果为 "<<s1<<endl;
     std::stringstream ss;
     ss.clear();
@@ -264,6 +268,10 @@ bool is_directory_exists(const std::string& path) {
     } else {
         return false;
     }
+}
+bool is_file_exists(const std::string& path) {
+    std::ifstream file(path);
+    return file.good();
 }
 
 void create_directory(const std::string& path) {

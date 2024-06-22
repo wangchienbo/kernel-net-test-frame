@@ -9,38 +9,42 @@
 using namespace std;
 vector<string> getTestStore(string apiName, string testCaseName) {
     vector<string>res;
-    string dir = "case";
+    string dir = "cases";
+    cout << "getTestStore: " << apiName << " " << testCaseName << endl;
     // casename为空，不执行
     // apiname 为空，返回空
     if (apiName == "" && testCaseName == "") {
         throw parseExpection(INVALID_PARAM);
     }
-
     if (testCaseName != "") {
+        cout << "testCaseName: " << testCaseName << endl;
         string apiName_ = case2apiName::get_instance().getdata(testCaseName);
+        cout << "apiName_: " << apiName_ << endl;
         if (apiName_ == "") {
             throw fileNotFoundException(CASE_NOT_EXIST);
         }
-        res.push_back(readFileContent(dir + "/" + apiName_ + "/" + testCaseName + ".txt"));
+        if (is_file_exists(dir + "/" + apiName_ + "/" + testCaseName + ".txt")) {
+            string content = readFileContent(dir + "/" + apiName_ + "/" + testCaseName + ".txt");
+            res.push_back(content);
+        }
+        cout<<"res: "<<res.size()<<endl;
+        
     } else {
-
+        cout << "apiName: " << apiName << endl;
+        if(is_directory_exists(dir + "/" + apiName) == false) {
+            throw fileNotFoundException(CASE_NOT_EXIST);
+        }
+        cout << "dir: " << dir + "/" + apiName << endl;
         vector<string> filenames = readDirectoryFilenames(dir + "/" + apiName);
+        cout << "filenames: " << filenames.size() << endl;
         vector<string> res;
         for (const auto& filename : filenames) {
             if (filename.find(".txt") != string::npos) {
-                 res.push_back((dir + "/" + apiName + "/" + filename));
+                cout << "filename: " << filename << endl;
+                 res.push_back(readFileContent(dir + "/" + apiName + "/" + filename));
             }
         }
         return res;
     }
-
-}
-
-bool is_directory_exists(const string& path) {
-    struct stat buffer;
-    if (stat(path.c_str(), &buffer) == 0) {
-        return S_ISDIR(buffer.st_mode);
-    } else {
-        return false;
-    }
+    return res;
 }

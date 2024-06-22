@@ -1,5 +1,6 @@
+
 {
-    "testCaseName": "ValidateNetworkThroughput2",
+    "testCaseName": "ValidateNetworkThroughput",
     "apiName": "sendData",
     "requestBody": {
       "dataSize": "100MB",

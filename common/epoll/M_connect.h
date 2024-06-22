@@ -1,3 +1,4 @@
+#pragma once
 #include "head.h"
 #include "mystruct.h"
 #define buffsize 1024

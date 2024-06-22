@@ -44,6 +44,37 @@ class myResponseThreadPool: public ResponseThreadPool {
             }
             return output;
         }
+
+        std::string queryStrToJson(const std::string& query) {
+            std::stringstream result;
+            std::vector<std::string> pairs;
+            std::string::size_type lastPos = 0, pos = 0;
+
+            // 分割字符串
+            while ((pos = query.find_first_of('&', lastPos)) != std::string::npos) {
+                pairs.push_back(query.substr(lastPos, pos - lastPos));
+                lastPos = pos + 1;
+            }
+            pairs.push_back(query.substr(lastPos));
+
+            // 处理每个键值对
+            bool first = true;
+            result << "{";
+            for (const auto& pair : pairs) {
+                if (!first) {
+                    result << ",";
+                } else {
+                    first = false;
+                }
+                auto eqPos = pair.find('=');
+                if (eqPos != std::string::npos) {
+                    result << "\"" << pair.substr(0, eqPos) << "\":" << pair.substr(eqPos + 1);
+                }
+            }
+            result << "}";
+
+            return result.str();
+        }
         void parse(const std::string& str) {
             cout<<"解析"<<str<<endl;
             std::istringstream sstr(str);
@@ -74,9 +105,10 @@ class myResponseThreadPool: public ResponseThreadPool {
                 std::cout << header.first << ": " << header.second << std::endl;
             }
             if(method == "GET" || method == "DELETE"){
-                std::string body;
                 body = url.find("?") == std::string::npos ? "" : url.substr(url.find("?") + 1);
-                std::cout << "body: " << body << std::endl;
+                url = url.substr(0, url.find("?"));
+                body = queryStrToJson(body);
+                std::cout << "body11: " << body<<" dsd "<< this->body<< std::endl;
                 return;
             }
             body = std::string(std::istreambuf_iterator<char>(sstr), {});

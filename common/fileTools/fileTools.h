@@ -1,3 +1,4 @@
+#pragma once
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -61,6 +62,30 @@ std::vector<std::string> readDirectoryFilenames(const std::string& directoryPath
         }
         // 只考虑常规文件
         if (dp->d_type == DT_REG) {
+            filenames.push_back(dp->d_name);
+        }
+    }
+
+    closedir(dirp);
+    return filenames;
+}
+std::vector<std::string> readDirectoryDirNames(const std::string& directoryPath) {
+    std::vector<std::string> filenames;
+    DIR* dirp = opendir(directoryPath.c_str());
+    struct dirent* dp;
+
+    if (dirp == nullptr) {
+        std::cerr << "Failed to open directory: " << directoryPath << std::endl;
+        return filenames; // 返回空的文件名列表
+    }
+
+    while ((dp = readdir(dirp)) != nullptr) {
+        // 跳过"."和".."目录
+        if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0) {
+            continue;
+        }
+        // 只考虑常规文件
+        if (dp->d_type == DT_DIR) {
             filenames.push_back(dp->d_name);
         }
     }

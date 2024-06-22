@@ -1,3 +1,4 @@
+#pragma once
 #include "../common/common.h"
 #include "../model/model.h"
 #include "../service/service.h"
@@ -30,6 +31,7 @@ void getTest(HttpRequest& req) {
         resp.code = 404;
         resp.msg = e.what();
     }
+    cout << "getTestResp: " << resp.data.size() << endl;
     resp.unparse();
     req.setResponse(resp.code, resp.json);
     return ;

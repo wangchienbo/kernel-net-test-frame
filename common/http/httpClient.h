@@ -9,6 +9,7 @@ class httpClient : public myconnect
             name2interface["addTemplate"] = make_pair("POST","/addTemplate");
             name2interface["runTest"] = make_pair("GET","/runTest");
             name2interface["addCase"] = make_pair("POST","/addCase");
+            name2interface["getTest"] = make_pair("GET","/getTest");
         }
         string Get(string path, string data, string header){
             string req = "GET " + path + " HTTP/1.1\r\n" + header + "\r\n\r\n";
@@ -43,6 +44,7 @@ class httpClient : public myconnect
             string path = name2interface[name].second;
             string header = "Content-Length: " + to_string(data.size());
             if(method == "GET"){
+                path += "?" + data;
                 return Get(path, data, header);
             }
             else if(method == "POST"){
@@ -52,6 +54,7 @@ class httpClient : public myconnect
                 return Put(path, data, header);
             }
             else if(method == "DELETE"){
+                path += "?" + data;
                 return Delete(path, data, header);
             }
             return Get(path, data, header);

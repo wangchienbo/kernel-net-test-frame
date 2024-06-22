@@ -6,7 +6,7 @@
 
 int addAddCaseStore(std::string apiName, std::string caseName, std::string caseBody) {
     std::cout << "Adding Case: " << endl;
-    string path="store/"+apiName;
+    string path="cases/"+apiName;
     if(is_directory_exists(path) == false) {
         create_directory(path);
     }

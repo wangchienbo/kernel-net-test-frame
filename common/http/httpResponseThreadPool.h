@@ -107,21 +107,29 @@ class myResponseThreadPool: public ResponseThreadPool {
                     req.setParams(method, url, version, headers, body);
                     cout<<"处理"<<endl;
                     pathHandlersGet[url](req);
+                }else{
+                    req.setResponse(404,"not found GET："+url);
                 }
             }else if(method == "POST"){
                 if(pathHandlersPost.find(url) != pathHandlersPost.end()){
                     req.setParams(method, url, version, headers, body);
                     pathHandlersPost[url](req);
+                }else{
+                    req.setResponse(404,"not found POST："+url);
                 }
             }else if(method == "PUT"){
                 if(pathHandlersPut.find(url) != pathHandlersPut.end()){
                     req.setParams(method, url, version, headers, body);
                     pathHandlersPut[url](req);
+                }else{
+                    req.setResponse(404,"not found PUT："+url);
                 }
             }else if(method == "DELETE"){
                 if(pathHandlersDelete.find(url) != pathHandlersDelete.end()){
                     req.setParams(method, url, version, headers, body);
                     pathHandlersDelete[url](req);
+                }else{
+                    req.setResponse(404,"not found DELETE："+url);
                 }
             }
             cout<<"处理完毕"<<endl;

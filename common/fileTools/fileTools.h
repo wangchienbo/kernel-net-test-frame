@@ -19,7 +19,7 @@ std::string readFileContent(const std::string& filePath) {
 }
 void writeFileContent(const std::string& filePath, const std::string& content, bool isAppend = false) {
     auto&g=ThreadGroup::get_instance();
-    g.addThread([](const std::string& filePath, const std::string& content, bool isAppend) {
+    g.addThread(filePath,[](const std::string& filePath, const std::string& content, bool isAppend) {
         if(isAppend){
             // cout<<"append file content:"<<endl;
             FilePathLock::get_instance().lock(filePath);

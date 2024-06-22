@@ -6,6 +6,8 @@
 #include <algorithm>
 #include "http/http.h"
 #include "myExpection/myExpection.h"
+#include <fstream>
+#include <sys/stat.h>
 
 #define SET_PARAMS(key, required) setParams(&key, json, #key, required)
 #define SET_PARAMS_CLASS(key, required) setParamsClass(key, json, #key, required)
@@ -69,9 +71,18 @@ void setParamsClass(T& input,string json_, string key, bool required) {
     input.json = s1;
     input.parse();
 }
+std::string removeQuotes(std::string input) {
+    size_t start = input.find_first_of("\"");
+    size_t end = input.find_last_of("\"");
+    if (start == std::string::npos || end == std::string::npos || start == end) {
+        return input; // 没有找到双引号或只有一个双引号，返回原字符串
+    }
+    return input.substr(start + 1, end - start - 1);
+}
 template <typename T>
 void setParams(T t, string json_, string key, bool required) {
     string s1= getparams(json_,key);
+    s1=removeQuotes(s1);
     cout<<"解析"<<json_<<" 解析key为 "<<key<<" 解析结果为 "<<s1<<endl;
     std::stringstream ss;
     ss.clear();
@@ -244,5 +255,27 @@ void setOutput(T t, string& json_, const string& key) {
     }
     if (!ss.fail()) {
         json_+=ss.str();
+    }
+}
+bool is_directory_exists(const std::string& path) {
+    struct stat buffer;
+    if (stat(path.c_str(), &buffer) == 0) {
+        return S_ISDIR(buffer.st_mode);
+    } else {
+        return false;
+    }
+}
+
+void create_directory(const std::string& path) {
+    size_t pos = 0;
+    std::string current_level;
+    while ((pos = path.find_first_of('/', pos)) != std::string::npos) {
+        current_level = path.substr(0, pos++);
+        if (!current_level.empty() && !is_directory_exists(current_level)) {
+            mkdir(current_level.c_str(), 0777); // 创建当前级别目录
+        }
+    }
+    if (!is_directory_exists(path)) {
+        mkdir(path.c_str(), 0777); // 创建最终目录
     }
 }

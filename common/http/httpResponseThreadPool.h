@@ -173,10 +173,17 @@ class myResponseThreadPool: public ResponseThreadPool {
             HttpResponse *result = static_cast<HttpResponse*>(&resp);
             cout<<"发送"<<result->msg<<endl;
             string res;
+            string status;
+            if (code2msg.find(result->code) != code2msg.end()){
+                status = code2msg[result->code];
+                status = removeWhitespace(status);
+            } else {
+                status = "Unknown";
+            }               
             if(result->code==200){
-                 res="HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: "+std::to_string(result->msg.size())+"\r\n\r\n";
+                 res="HTTP/1.1 200 "+ status +"\r\nContent-Type: text/html\r\nContent-Length: "+std::to_string(result->msg.size())+"\r\n\r\n";
             }else{
-                 res="HTTP/1.1 "+ std::to_string(result->code) +" OK\r\nContent-Type: text/html\r\nContent-Length: "+std::to_string(result->msg.size())+"\r\n\r\n";
+                 res="HTTP/1.1 "+ std::to_string(result->code) + " " + status +"\r\nContent-Type: text/html\r\nContent-Length: "+std::to_string(result->msg.size())+"\r\n\r\n";
             }
             res+="\n";
             res+=result->msg+"#";

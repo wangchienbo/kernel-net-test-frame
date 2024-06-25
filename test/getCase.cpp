@@ -4,7 +4,7 @@ int main(){
     httpClient myclient("127.0.0.1",8080);
     myclient.init();
     myclient.run();
-    string json=readFileContent("case.json");
+    // string json=readFileContent("case.json");
     auto resp=myclient.runRequest("getTest","apiName=\"sendData\"&testCaseName=\"ValidateNetworkThroughput1\"");
     cout<<resp<<endl;
     return 0;

@@ -8,7 +8,9 @@
 #include "myExpection/myExpection.h"
 #include <fstream>
 #include <sys/stat.h>
-
+#include <chrono>
+#include <sstream>
+#include <iomanip>
 #define SET_PARAMS(key, required) setParams(&key, json, #key, required)
 #define SET_PARAMS_CLASS(key, required) setParamsClass(key, json, #key, required)
 #define SET_PARAMS_LIST(key, required) setParamsList(key, json, #key, required)
@@ -286,4 +288,13 @@ void create_directory(const std::string& path) {
     if (!is_directory_exists(path)) {
         mkdir(path.c_str(), 0777); // 创建最终目录
     }
+}
+
+std::string getCurrentTime() {
+    auto now = std::chrono::system_clock::now();
+    auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+    char buf[100];
+    std::strftime(buf, sizeof(buf), "%Y-%m-%dT%H:%M:%S", std::localtime(&in_time_t));
+    return std::string(buf);
 }

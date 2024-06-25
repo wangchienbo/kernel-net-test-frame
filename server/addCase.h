@@ -5,28 +5,39 @@
 void addCase(HttpRequest& req){
     cout<<"addCase"<<endl;
     addCaseReq req_;
-    addCaseResp resp_;
+    addCaseResp resp;
     req_.json = req.getBody();
     try{
         req_.parse();
     }
     catch(parseExpection e){
-        resp_.code = HTTP_BAD_REQUEST;
-        resp_.data = e.what();
-        resp_.unparse();
-        req.setResponse(resp_.code,resp_.json);
+        resp.code = HTTP_BAD_REQUEST;
+        resp.data = e.what();
+        resp.unparse();
+        req.setResponse(resp.code,resp.json);
         return ;
     }
-    int res = addCaseService(req_);
-    if(res==ExistErrorCode){
-        resp_.code = HTTP_INTERNAL_SERVER_ERROR;
-        resp_.data = "Case already exists";
+    try {
+        resp = addCaseService(req_);
+        resp.code = HTTP_OK;
     }
-    else{
-        resp_.code = HTTP_OK;
-        resp_.data = "Case added successfully";
+    catch(parseExpection e){
+        resp.code = HTTP_BAD_REQUEST;
+        resp.msg = e.what();
     }
-    resp_.unparse();
-    req.setResponse(resp_.code,resp_.json);
+    catch(connectExpection e){
+        resp.code = HTTP_INTERNAL_SERVER_ERROR;
+        resp.msg = e.what();
+    }
+    catch(fileNotFoundException e){
+        resp.code = HTTP_NOT_FOUND;
+        resp.msg = e.what();
+    }
+    catch(caseExistExpection e){
+        resp.code = HTTP_INTERNAL_SERVER_ERROR;
+        resp.msg = e.what();
+    }
+    resp.unparse();
+    req.setResponse(resp.code,resp.json);
     return ;
 }

@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include "../common/common.h"
 
-int addAddCaseStore(std::string apiName, std::string caseName, std::string caseBody) {
+void addAddCaseStore(std::string apiName, std::string caseName, std::string caseBody) {
     std::cout << "Adding Case: " << endl;
     string path="cases/"+apiName;
     if(is_directory_exists(path) == false) {
@@ -12,11 +12,11 @@ int addAddCaseStore(std::string apiName, std::string caseName, std::string caseB
     }
     cout << "path: " << path << endl;
     if (case2apiName::get_instance().getdata(caseName)!=""){
-        return ExistErrorCode;
+        throw caseExistExpection("case file already exist:"+caseName);
     }    
     writeFileContent(path+"/"+caseName+".txt",caseBody,true);
     auto&g=ThreadGroup::get_instance();
     g.wait(path+"/"+caseName+".txt");
     case2apiName::get_instance().setdata(caseName,apiName);
-    return SUCCESSCode;
+    return ;
 }

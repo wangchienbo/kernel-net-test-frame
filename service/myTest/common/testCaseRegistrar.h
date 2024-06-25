@@ -8,6 +8,7 @@ public:
         TestCaseRegistry::Instance().RegisterTestCase(test_case);
     }
 };
+
 // 定义宏，用于声明和注册测试用例
 #define TEST_CASE(name) \
     class name : public TestCase { \

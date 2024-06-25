@@ -12,12 +12,14 @@ class addCaseReq:public apiRunReq{
         string requestBody;
         string preconditions;
         string expectedOutcome;
+        string caseId;
         void parse(){
             SET_PARAMS(testCaseName,true);
             SET_PARAMS(apiName,true);
             SET_PARAMS(requestBody,true);
             SET_PARAMS(preconditions,true);
             SET_PARAMS(expectedOutcome,true);
+            SET_PARAMS(caseId,false);
         }
         void unparse(){
             SET_OUTPUT(testCaseName);
@@ -25,17 +27,19 @@ class addCaseReq:public apiRunReq{
             SET_OUTPUT(requestBody);
             SET_OUTPUT(preconditions);
             SET_OUTPUT(expectedOutcome);
+            SET_OUTPUT(caseId);
             END_UNPARSE
         }
 };
 class addCaseResp:public apiRunResp{
     public:
-        string data;
+        string caseId;
         void parse(){
-            SET_PARAMS(data ,true);
+            SET_PARAMS(caseId ,true);
         }
         void unparse(){
-            SET_OUTPUT(data);
+            SET_OUTPUT(caseId); 
+            SET_OUTPUT(msg);
             END_UNPARSE
         }
 };

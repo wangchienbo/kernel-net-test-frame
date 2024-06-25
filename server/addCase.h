@@ -20,6 +20,7 @@ void addCase(HttpRequest& req){
     try {
         resp = addCaseService(req_);
         resp.code = HTTP_OK;
+        resp.msg = "addCase success";
     }
     catch(parseExpection e){
         resp.code = HTTP_BAD_REQUEST;

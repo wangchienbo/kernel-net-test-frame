@@ -20,6 +20,7 @@ void addTemplate(HttpRequest& req){
     try {
         resp = addTemplateService(req_);
         resp.code = HTTP_OK;
+        resp.msg = "addTemplate success";
     }
     catch(parseExpection e){
         resp.code = HTTP_BAD_REQUEST;

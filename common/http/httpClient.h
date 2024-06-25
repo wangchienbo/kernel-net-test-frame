@@ -7,7 +7,7 @@ class httpClient : public myconnect
         unordered_map<string, pair<string, string>> name2interface;
         httpClient(string ip, int port):myconnect(ip, port){
             name2interface["addTemplate"] = make_pair("POST","/addTemplate");
-            name2interface["runTest"] = make_pair("GET","/runTest");
+            name2interface["runTest"] = make_pair("POST","/runTest");
             name2interface["addCase"] = make_pair("POST","/addCase");
             name2interface["getTest"] = make_pair("GET","/getTest");
         }

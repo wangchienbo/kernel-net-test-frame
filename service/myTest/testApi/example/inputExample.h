@@ -1,8 +1,8 @@
 #pragma once
 #include "../api.h"
-#define API_NAME Api1
-#define API_CLASS TEST_CASE(Api1)
-#define API_INPUT Input_Api1
+#define API_NAME example1
+#define API_CLASS TEST_CASE(example1)
+#define API_INPUT Input_example1
 class Temp : public Input{
     public:
         Temp(){

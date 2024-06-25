@@ -5,3 +5,4 @@
 #include "fileExistExpection.h"
 #include "caseExistExpection.h"
 #include "templateExistExpection.h"
+#include "fileNameValidException.h"

@@ -20,7 +20,7 @@
 #define SET_OUTPUT_LIST(key) setOutputList(key, json, std::string(#key))
 #define SET_OUTPUT_LIST_CLASS(key) setOutputListClass(key, json, std::string(#key))
 #define END_UNPARSE json+="}";
-std::string getparams(string url, const std::string& key);
+std::string getparams(string url, const std::string& key, bool needRemoveBound);
 bool areBracketsBalanced(const std::string& str);
 std::pair<bool, int> CheckAndConvert(const std::string& s) {
     for (char c : s) {
@@ -30,10 +30,17 @@ std::pair<bool, int> CheckAndConvert(const std::string& s) {
     }
     return {true, std::stoi(s)};
 }
-
+std::string removeQuotes(std::string input) {
+    size_t start = input.find_first_of("\"");
+    size_t end = input.find_last_of("\"");
+    if (start == std::string::npos || end == std::string::npos || start == end || start != 0 || end != input.length() - 1){
+        return input; // 没有找到双引号或只有一个双引号，返回原字符串
+    }
+    return input.substr(start + 1, end - start - 1);
+}
 template <typename T>
 void setParamsListClass(std::vector<T>& input, const std::string& json_, const std::string& key, bool required) {
-    std::string s1 = getparams(json_, key);
+    std::string s1 = getparams(json_, key,true);
     std::istringstream ss(s1);
     std::string item;
     std::string temp;
@@ -50,40 +57,57 @@ void setParamsListClass(std::vector<T>& input, const std::string& json_, const s
         }
     }
 }
-
+bool balanceQuotes(const std::string& str) {
+    std::stack<char> quotes;
+    for (char ch : str) {
+        if (ch == '\"') {
+            if (quotes.empty() || quotes.top() != '"') {
+                quotes.push(ch);
+            } else {
+                quotes.pop();
+            }
+        }
+    }
+    return quotes.empty();
+}
 template <typename T>
 void setParamsList(std::vector<T>& input, const std::string& json_, const std::string& key, bool required) {
-    std::string s1 = getparams(json_, key);
+    std::string s1 = getparams(json_, key,true);
     std::cout<<"解析"<<json_<<" 解析key为 "<<key<<" 解析结果为 "<<s1<<std::endl;
     std::istringstream ss(s1);
     std::string item;
-    while (std::getline(ss, item, ',')) { // 假设列表项由逗号分隔
-        std::stringstream itemStream(item);
-        T value;
-        itemStream >> value; // 将字符串转换为 T 类型
-        input.push_back(value);
+    std::string temp;
+    while (std::getline(ss, temp, ',')) { // 自定义逻辑以确保 "" 平衡
+        item += temp;
+        if (balanceQuotes(item)) {
+            item = removeQuotes(item);
+            std::stringstream ss;
+            ss << item;
+            T value;
+            ss >> std::ws >> value;
+            if (!ss.fail()) {
+                input.push_back(value);
+            }
+            item.clear(); // 清空 item 以解析下一个
+        } else {
+            item += ","; // 如果不平衡，添加逗号继续读取
+        }
     }
     cout<<"解析"<<json_<<" 解析key为 "<<key<<" 解析结果为 "<<s1<<" 长度为 "<<input.size()<<endl;
 }
 
 template <typename T>
 void setParamsClass(T& input,string json_, string key, bool required) {
-    string s1= getparams(json_,key);
+    string s1= getparams(json_,key,true);
     std::cout<<"解析"<<json_<<" 解析key为 "<<key<<" 解析结果为 "<<s1<<std::endl;
+    cout<<s1<<endl;
     input.json = s1;
     input.parse();
 }
-std::string removeQuotes(std::string input) {
-    size_t start = input.find_first_of("\"");
-    size_t end = input.find_last_of("\"");
-    if (start == std::string::npos || end == std::string::npos || start == end) {
-        return input; // 没有找到双引号或只有一个双引号，返回原字符串
-    }
-    return input.substr(start + 1, end - start - 1);
-}
+
 template <typename T>
 void setParams(T t, string json_, string key, bool required) {
-    string s1= getparams(json_,key);
+    string s1= getparams(json_,key,false);
     s1=removeQuotes(s1);
     if(s1==""){
         if(required) throw parseExpection("parse error");
@@ -154,7 +178,7 @@ std::string removeWhitespace(const std::string& input) {
     }
     return result;
 }
-std::string getparams(string url, const std::string& key) {
+std::string getparams(string url, const std::string& key, bool needRemoveBound = true) {
     url=removeWhitespace(url);
     if(url.length() > 0 && (url[0] == '{' || url[0] == '[' || url[0] == '(')){
         url = url.substr(1, url.length() - 2);
@@ -179,7 +203,7 @@ std::string getparams(string url, const std::string& key) {
         std::string value = url.substr(start_pos, end_pos - start_pos);
         // 检查括号是否成对
         if (areBracketsBalanced(value)) {
-            if (value.length() > 0 && (value[0] == '{' || value[0] == '[' || value[0] == '(')){
+            if (needRemoveBound && value.length() > 0 && (value[0] == '{' || value[0] == '[' || value[0] == '(')){
                 value = value.substr(1, value.length() - 2);
             }
             return value;
@@ -189,7 +213,7 @@ std::string getparams(string url, const std::string& key) {
     }
     std::string value = url.substr(start_pos, url.length() - start_pos);
     if (areBracketsBalanced(value)) {
-        if (value.length() > 0 && (value[0] == '{' || value[0] == '[' || value[0] == '(')){
+        if (needRemoveBound && value.length() > 0 && (value[0] == '{' || value[0] == '[' || value[0] == '(')){
             value = value.substr(1, value.length() - 2);
         }
         return value;
@@ -297,4 +321,24 @@ std::string getCurrentTime() {
     char buf[100];
     std::strftime(buf, sizeof(buf), "%Y-%m-%dT%H:%M:%S", std::localtime(&in_time_t));
     return std::string(buf);
+}
+
+bool isFileNameValid(const std::string& fileName) {
+    // 文件名不允许的字符
+    const std::string invalidChars = "\\/:*?\"<>|";
+
+    // 检查文件名是否为空
+    if (fileName.empty()) {
+        return false;
+    }
+
+    // 检查文件名是否包含非法字符
+    if (std::any_of(fileName.begin(), fileName.end(), [&](char ch) {
+        return invalidChars.find(ch) != std::string::npos;
+    })) {
+        return false;
+    }
+
+    // 文件名合法
+    return true;
 }

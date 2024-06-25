@@ -2,21 +2,34 @@
 #include "../model/model.h"
 #include "../service/service.h"
 // extern void AddTest_(const HttpRequest& req);
-void RunTest(HttpRequest& req){
-    cout<<"AddTest"<<endl;
+void runTest(HttpRequest& req){
     runTestReq req_;
-    runTestResp resp_;
+    runTestResp resp;
     req_.json = req.getBody();
-    cout<<req_.json<<endl;
-    req_.parse();
-    cout<<req_.apiName<<endl;
-    cout<<req_.input<<endl;
-    auto myApiRun=ApiRun();
-    apiRunResp res= myApiRun.run(req_.apiName,req_.input);
-
-    resp_.code = res.code;
-    resp_.data = res.data;
-    resp_.unparse();
-    req.setResponse(resp_.code,resp_.json);
-    return;
+    try{
+        req_.parse();
+    }
+    catch(parseExpection e){
+        resp.code = HTTP_BAD_REQUEST;
+        resp.data = e.what();
+        resp.unparse();
+        req.setResponse(resp.code,resp.json);
+        return ;
+    }
+    try {
+        resp = runTestService(req_);
+        resp.code = HTTP_OK;
+        resp.msg = "runTest success";
+    }
+    catch(parseExpection e){
+        resp.code = HTTP_BAD_REQUEST;
+        resp.msg = e.what();
+    }
+    catch(fileNameValidExpection e){
+        resp.code = HTTP_INTERNAL_SERVER_ERROR;
+        resp.msg = e.what();
+    }
+    resp.unparse();
+    req.setResponse(resp.code,resp.json);
+    return ;
 }

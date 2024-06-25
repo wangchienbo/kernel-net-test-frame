@@ -1,6 +1,6 @@
 #pragma once
 #include "../api.h"
-#define API_OUTPUT Output_Api1
+#define API_OUTPUT Output_example1
 class Temp2 : public Output{
     public:
         Temp2(){

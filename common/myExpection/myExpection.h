@@ -4,3 +4,4 @@
 #include "fileNotFoundException.h"
 #include "fileExistExpection.h"
 #include "caseExistExpection.h"
+#include "templateExistExpection.h"

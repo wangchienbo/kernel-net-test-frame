@@ -5,26 +5,31 @@
 void addTemplate(HttpRequest& req){
     cout<<"addTemplate"<<endl;
     addTemplateReq req_;
-    addTemplateResp resp_;
+    addTemplateResp resp;
     req_.json = req.getBody();
-    try {
+    try{
         req_.parse();
-    } catch(parseExpection e) {
-        resp_.code = 400;
-        resp_.data = e.what();
-        resp_.unparse();
-        req.setResponse(resp_.code,resp_.json);
+    }
+    catch(parseExpection e){
+        resp.code = HTTP_BAD_REQUEST;
+        resp.data = e.what();
+        resp.unparse();
+        req.setResponse(resp.code,resp.json);
         return ;
     }
-    string data = addTemplateService(req_);
-    if(data=="Invalid test type"){
-        resp_.code = 500;
-        resp_.data = data;
-    } else {
-        resp_.code = 200;
-        resp_.data = data;
+    try {
+        resp = addTemplateService(req_);
+        resp.code = HTTP_OK;
     }
-    resp_.unparse();
-    req.setResponse(resp_.code,resp_.json);
+    catch(parseExpection e){
+        resp.code = HTTP_BAD_REQUEST;
+        resp.msg = e.what();
+    }
+    catch(templateExistExpection e){
+        resp.code = HTTP_INTERNAL_SERVER_ERROR;
+        resp.msg = e.what();
+    }
+    resp.unparse();
+    req.setResponse(resp.code,resp.json);
     return ;
 }

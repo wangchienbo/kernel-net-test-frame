@@ -2,6 +2,7 @@
 #include "../model/model.h"
 #include <fstream>
 #include <sys/stat.h>
+#include "../common/common.h"
 
 void addTemplateStore(std::string templateName, std::string templatebody) {
     std::cout << "Adding template: " << templateName << std::endl;
@@ -10,14 +11,10 @@ void addTemplateStore(std::string templateName, std::string templatebody) {
     if(is_directory_exists(dir) == false) {
         create_directory(dir);
     }
-    std::ofstream file(dir+ "/" + (templateName + ".txt"), std::ios::out | std::ios::binary);
-    if (!file) {
-        std::cerr << "File could not be opened for writing\n";
-        return;
+    if (is_file_exists(dir+"/"+templateName+".txt")){
+        throw templateExistExpection("Template file already exist: "+templateName);
     }
-
-    file.write(templatebody.c_str(), templatebody.size());
-    file.close();
-
+    writeFileContent(dir+"/"+templateName+".txt", templatebody);
+    ThreadGroup::get_instance().wait(dir+"/"+templateName+".txt");
     std::cout << "Template added successfully" << std::endl;
 }

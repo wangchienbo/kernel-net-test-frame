@@ -1,5 +1,6 @@
 {
     "apiName":"example1",
+    "needReport":true,
     "requestBody":{
         "sd1":1,
         "sd2":2,

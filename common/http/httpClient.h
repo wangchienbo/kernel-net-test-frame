@@ -11,6 +11,7 @@ class httpClient : public myconnect
             name2interface["addCase"] = make_pair("POST","/addCase");
             name2interface["getTest"] = make_pair("GET","/getTest");
             name2interface["runCase"] = make_pair("POST","/runCase");
+            name2interface["getTemplate"] = make_pair("GET","/getTemplate");
         }
         string Get(string path, string data, string header){
             string req = "GET " + path + " HTTP/1.1\r\n" + header + "\r\n\r\n";

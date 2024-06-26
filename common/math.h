@@ -252,8 +252,19 @@ void setOutputList(std::vector<T>& output_, string& json_, const string& key) {
         }
         std::stringstream ss;
         ss << output_[i];
+        bool needQuotes = false;
+        if(std::is_same<T, std::string>::value){
+            needQuotes = true;
+        }
+
         if (!ss.fail()) {
+            if(needQuotes){
+                json_+='"';
+            }
             json_+=ss.str();
+            if(needQuotes){
+                json_+='"';
+            }
         }
     }
     json_+="]";
@@ -279,13 +290,27 @@ void setOutput(T t, string& json_, const string& key) {
     }
     json_+='"'+key+'"'+":";
     std::stringstream ss;
+    bool needQuotes = false;
     if(std::is_pointer<T>::value){
         ss << *t;
+        if(std::is_same<T, std::string*>::value){
+            needQuotes = true;
+        }
     }else{
         ss << t;
+        if(std::is_same<T, std::string>::value){
+            needQuotes = true;
+        }
     }
     if (!ss.fail()) {
+        if(needQuotes){
+            json_+='"';
+        }
         json_+=ss.str();
+        if(needQuotes){
+            json_+='"';
+        }
+
     }
 }
 bool is_directory_exists(const std::string& path) {

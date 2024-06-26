@@ -23,6 +23,7 @@ class getTestResp:public apiRunResp{
         void parse(){
         }
         void unparse(){
+            json.clear();
             SET_OUTPUT(msg);
             SET_OUTPUT_LIST(data);
             END_UNPARSE

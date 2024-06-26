@@ -10,4 +10,5 @@ void register_(HttpServer* httpserv){
     httpserv->registerPath("/getTest", "GET", getTest);
     httpserv->registerPath("/runTest", "POST", runTest);
     httpserv->registerPath("/runCase", "POST", runCase);
+    httpserv->registerPath("/getTemplate", "GET", getTemplate);
 }

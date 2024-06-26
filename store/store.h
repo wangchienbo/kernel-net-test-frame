@@ -4,3 +4,4 @@
 #include "getTest.h"
 #include "runTest.h"
 #include "saveReport.h"
+#include "getTemplate.h"

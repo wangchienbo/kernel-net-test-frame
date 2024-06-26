@@ -4,3 +4,4 @@
 #include "addCase.h"
 #include "getTest.h"
 #include "runCase.h"
+#include "getTemplate.h"

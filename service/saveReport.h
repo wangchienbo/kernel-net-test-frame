@@ -40,3 +40,71 @@ void saveRunCaseReportService(runCaseResp resp, runCaseReq req, runTestReq req_)
     saveReportStore(reportName, report);
     return ;
 }
+void saveRunTemplateReportService(runTemplateResp resp, runTemplateReq req, getTemplateResp req_){
+    string reportName = resp.reportName;
+    string report ="";
+    int successNum = 0;
+    int failNum = 0;
+    report += "Template Name: " + req.templateName + "\n";
+    report += "templateId: " + req_.templateId + "\n";
+    report += "version: " + std::to_string(req_.version_number) + "\n";  
+    report += "single Test num: " + std::to_string(req_.singleTestCases.size()) + "\n";
+    int singleIndex=0;
+    for(auto singleCase : resp.singleResults){
+        report += "正在测试第" + std::to_string(singleIndex) + "个单测\n";
+        report += "single Test Case Name: " + req_.singleTestCases[singleIndex] + "\n";
+        report += "Response Code: " + to_string(singleCase.testResult.responseCode) + "\n";
+        report += "Response Result: " + singleCase.testResult.responseData + "\n";
+        if(singleCase.testResult.responseCode == SUCCESSCode){
+            successNum++;
+        } else {
+            failNum++;
+        }
+        singleIndex++;
+    }
+    report += "performance Test num: " + std::to_string(req_.performanceTestCases.size()) + "\n";
+    int performanceIndex=0;
+    for(auto performanceCase : resp.performanceResults){
+        report += "正在测试第" + std::to_string(performanceIndex) + "个性能测试\n";
+        report += "performance Test Case Name: " + req_.performanceTestCases[performanceIndex] + "\n";
+        report += "Response Code: " + to_string(performanceCase.testResult.responseCode) + "\n";
+        report += "Response Result: " + performanceCase.testResult.responseData + "\n";
+        if(performanceCase.testResult.responseCode == SUCCESSCode){
+            successNum++;
+        } else {
+            failNum++;
+        }
+        performanceIndex++;
+    }
+    report += "safe Test num: " + std::to_string(req_.safeTestCases.size()) + "\n";
+    int safeIndex=0;
+    for(auto safeCase : resp.safeTestResults){
+        report += "正在测试第" + std::to_string(safeIndex) + "个安全测试\n";
+        report += "safe Test Case Name: " + req_.safeTestCases[safeIndex] + "\n";
+        report += "Response Code: " + to_string(safeCase.testResult.responseCode) + "\n";
+        report += "Response Result: " + safeCase.testResult.responseData + "\n";
+        if(safeCase.testResult.responseCode == SUCCESSCode){
+            successNum++;
+        } else {
+            failNum++;
+        }
+        safeIndex++;
+    }
+    report += "compatibility Test num: " + std::to_string(req_.compatibilityTestCases.size()) + "\n";
+    int compatibilityIndex=0;
+    for(auto compatibilityCase : resp.compatibilityResults){
+        report += "正在测试第" + std::to_string(compatibilityIndex) + "个兼容性测试\n";
+        report += "compatibility Test Case Name: " + req_.compatibilityTestCases[compatibilityIndex] + "\n";
+        report += "Response Code: " + to_string(compatibilityCase.testResult.responseCode) + "\n";
+        report += "Response Result: " + compatibilityCase.testResult.responseData + "\n";
+        if(compatibilityCase.testResult.responseCode == SUCCESSCode){
+            successNum++;
+        } else {
+            failNum++;
+        }
+        compatibilityIndex++;
+    }
+    report += "统计: \n" + std::to_string(successNum) + " 成功\n" + std::to_string(failNum) + " 失败\n";
+    saveReportStore(reportName, report);
+    return ;
+}

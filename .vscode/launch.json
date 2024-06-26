@@ -7,8 +7,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/project/kernel-net-test-frame",
-      "program": "/home/project/kernel-net-test-frame/build/Debug/outDebug",
+      "cwd": "/home/project/kernel-net-test-frame/testcases",
+      "program": "/home/project/kernel-net-test-frame/testcases/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

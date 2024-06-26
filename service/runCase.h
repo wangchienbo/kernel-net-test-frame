@@ -33,10 +33,3 @@ runCaseResp runCaseService(runCaseReq req){
     }
     return resp;
 }
-vector<runCaseResp> runCaseService(vector<runCaseReq> reqs){
-    vector<runCaseResp> resps;
-    for(auto req:reqs){
-        resps.push_back(runCaseService(req));
-    }
-    return resps;
-}

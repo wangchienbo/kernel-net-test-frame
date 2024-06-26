@@ -106,6 +106,7 @@
     "ratio": "cpp",
     "system_error": "cpp",
     "thread": "cpp",
-    "map": "cpp"
+    "map": "cpp",
+    "iomanip": "cpp"
   }
 }

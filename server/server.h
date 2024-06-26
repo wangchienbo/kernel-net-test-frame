@@ -5,3 +5,4 @@
 #include "getTest.h"
 #include "runCase.h"
 #include "getTemplate.h"
+#include "runTemplate.h"

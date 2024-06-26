@@ -1,3 +1,4 @@
+#pragma once
 #include "myTest/testApi/allApi.h"
 #include "saveReport.h"
 // class ApiRun {
@@ -40,21 +41,20 @@ runTestResp runTestService(runTestReq req){
             apiResp->data = e.what();
         }
     }
-    if (apiResp->code == SUCCESSCode) {
-        resp.code = SUCCESSCode;
-        resp.apiName = req.apiName;
-        resp.testResult.responseCode = apiResp->code;
-        resp.testResult.responseData = apiResp->data;
-    } else {
-        resp.code = testErrorCode;
-    }
+    resp.apiName = req.apiName;
+    resp.testResult.responseCode = apiResp->code;
+    resp.testResult.responseData = apiResp->data;
     if(req.needReport=="true"){
         if(isFileNameValid(req.reportName)){
             resp.reportName = req.reportName;
         } else {
             resp.reportName = req.apiName + "_" + getCurrentTime();
         }
-        saveReportService(resp, req);
+        try {
+            saveRunTestReportService(resp, req);
+        } catch (reportNameExistExpection& e) {
+            resp.testResult.msg = e.what();
+        }
     }
     return resp;
 }

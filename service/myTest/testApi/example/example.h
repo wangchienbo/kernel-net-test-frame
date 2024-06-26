@@ -1,3 +1,4 @@
+#pragma once
 #include "../api.h"
 #include "inputExample.h"
 #include "outputExample.h"

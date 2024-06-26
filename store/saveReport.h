@@ -13,5 +13,8 @@ void saveReportStore(std::string reportName, std::string report) {
         create_directory(path);
     }
     cout << "path: " << path << endl;
-    writeFileContent(path+"/"+reportName+".txt",report,true);
+    if(is_file_exists(path+"/"+reportName) == true) {
+        throw reportNameExistExpection("Report Name Exist!, Report Name: "+reportName);
+    }
+    writeFileContent(path+"/"+reportName,report,true);
 }

@@ -110,7 +110,7 @@ void setParams(T t, string json_, string key, bool required) {
     string s1= getparams(json_,key,false);
     s1=removeQuotes(s1);
     if(s1==""){
-        if(required) throw parseExpection("parse error");
+        if(required) throw parseExpection("parse error, key not found, \n key is :\n"+key+"\njson is :\n"+json_);
         return;
     }
     cout<<"解析"<<json_<<" 解析key为 "<<key<<" 解析结果为 "<<s1<<endl;
@@ -180,6 +180,7 @@ std::string removeWhitespace(const std::string& input) {
 }
 std::string getparams(string url, const std::string& key, bool needRemoveBound = true) {
     url=removeWhitespace(url);
+    cout<<"url: "<<url<<" key: "<<key<<endl;
     if(url.length() > 0 && (url[0] == '{' || url[0] == '[' || url[0] == '(')){
         url = url.substr(1, url.length() - 2);
     }

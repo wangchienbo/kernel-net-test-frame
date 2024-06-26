@@ -1,11 +1,9 @@
 #include "../common/common.h"
 #include "../model/model.h"
 #include "../service/service.h"
-// extern void AddTest_(const HttpRequest& req);
-void addTemplate(HttpRequest& req){
-    cout<<"addTemplate"<<endl;
-    addTemplateReq req_;
-    addTemplateResp resp;
+void runCase(HttpRequest& req){
+    runCaseReq req_;
+    runCaseResp resp;
     req_.json = req.getBody();
     try{
         req_.parse();
@@ -18,15 +16,15 @@ void addTemplate(HttpRequest& req){
         return ;
     }
     try {
-        resp = addTemplateService(req_);
+        resp = runCaseService(req_);
         resp.code = HTTP_OK;
-        resp.msg = "addTemplate success";
+        if(resp.msg.empty()) resp.msg = "runCase success";
     }
     catch(parseExpection e){
         resp.code = HTTP_BAD_REQUEST;
         resp.msg = e.what();
     }
-    catch(templateExistExpection e){
+    catch(fileNameValidExpection e){
         resp.code = HTTP_INTERNAL_SERVER_ERROR;
         resp.msg = e.what();
     }

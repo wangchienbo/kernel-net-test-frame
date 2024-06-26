@@ -12,7 +12,7 @@ void addCase(HttpRequest& req){
     }
     catch(parseExpection e){
         resp.code = HTTP_BAD_REQUEST;
-        resp.data = e.what();
+        resp.msg = e.what();
         resp.unparse();
         req.setResponse(resp.code,resp.json);
         return ;

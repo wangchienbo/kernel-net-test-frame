@@ -1,3 +1,4 @@
+#pragma once
 #include "../common/common.h"
 #include "../model/model.h"
 #include "../service/service.h"
@@ -11,7 +12,7 @@ void runTest(HttpRequest& req){
     }
     catch(parseExpection e){
         resp.code = HTTP_BAD_REQUEST;
-        resp.data = e.what();
+        resp.msg = e.what();
         resp.unparse();
         req.setResponse(resp.code,resp.json);
         return ;
@@ -19,7 +20,7 @@ void runTest(HttpRequest& req){
     try {
         resp = runTestService(req_);
         resp.code = HTTP_OK;
-        resp.msg = "runTest success";
+        if(resp.msg.empty()) resp.msg = "runTest success";
     }
     catch(parseExpection e){
         resp.code = HTTP_BAD_REQUEST;

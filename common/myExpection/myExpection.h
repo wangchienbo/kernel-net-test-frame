@@ -6,3 +6,5 @@
 #include "caseExistExpection.h"
 #include "templateExistExpection.h"
 #include "fileNameValidException.h"
+#include "notFoundCaseExpection.h"
+#include "reportNameExistExpection.h"

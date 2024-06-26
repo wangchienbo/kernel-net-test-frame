@@ -9,4 +9,5 @@ void register_(HttpServer* httpserv){
     httpserv->registerPath("/addCase", "POST", addCase);
     httpserv->registerPath("/getTest", "GET", getTest);
     httpserv->registerPath("/runTest", "POST", runTest);
+    httpserv->registerPath("/runCase", "POST", runCase);
 }

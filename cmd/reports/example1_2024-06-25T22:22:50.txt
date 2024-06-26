@@ -1,0 +1,8 @@
+API Name: example1
+Request Body: sd1":1,"sd2":2,"temp":{"num":100,"abs":10},"sd3":[1,2,3,4,5],"temps":[{"num":1,"abs":2},{"num":3,"abs
+Response Code: 4335914
+失败原因: 
+
+统计: 
+ 0 成功
+, 1 失败

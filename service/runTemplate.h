@@ -31,8 +31,9 @@ vector<runCaseResp> runCaseList(vector<string>& reqs,int type){
                 auto end = std::chrono::high_resolution_clock::now(); // 结束时间
                 auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count(); // 计算运行时间（毫秒）
                 float ips = 1000.0/duration;
-                resp_.testResult.responseData += "共测试1000次，cost time："+std::to_string(duration)+"，QPS: "+to_string(ips)+"每s"+"其中：\n"; 
+                resp_.testResult.responseData += "\n共测试1000次，cost time："+std::to_string(duration)+"，QPS: "+to_string(ips)+"/s"+"其中：\n"; 
                 resp_.testResult.responseData += "successNum: " + to_string(successNum) + " failNum: " + to_string(failNum);
+                resp.push_back(resp_);
             }else{
                 runCaseResp resp_ = runCaseService(runCaseReq_);
                 resp.push_back(resp_);
@@ -73,6 +74,6 @@ runTemplateResp runTemplateService(runTemplateReq req){
         }
     }
     resp.reportName = req.reportName;
-    resp.parse();
+    resp.unparse();
     return resp;
 }

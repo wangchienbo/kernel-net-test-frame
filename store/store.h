@@ -5,3 +5,4 @@
 #include "runTest.h"
 #include "saveReport.h"
 #include "getTemplate.h"
+#include "addTruthValue.h"

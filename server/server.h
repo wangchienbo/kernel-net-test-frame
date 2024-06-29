@@ -6,3 +6,4 @@
 #include "runCase.h"
 #include "getTemplate.h"
 #include "runTemplate.h"
+#include "addTruthValue.h"

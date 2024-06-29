@@ -368,3 +368,22 @@ bool isFileNameValid(const std::string& fileName) {
     // 文件名合法
     return true;
 }
+std::vector<std::string> splitString(const std::string& input, const std::string& delimiter) {
+    std::vector<std::string> result;
+    size_t startPos = 0;
+    size_t endPos = 0;
+    std::string token;
+    while ((endPos = input.find(delimiter, startPos)) != std::string::npos) {
+        token = input.substr(startPos, endPos - startPos);
+        if (!token.empty()) { // 避免添加空字符串
+            result.push_back(token);
+        }
+        startPos = endPos + delimiter.length(); // 移动到下一个潜在的分割点
+    }
+    // 添加最后一个片段（如果存在）
+    token = input.substr(startPos);
+    if (!token.empty()) { // 避免添加空字符串
+        result.push_back(token);
+    }
+    return result;
+}

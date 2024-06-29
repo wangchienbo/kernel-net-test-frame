@@ -37,7 +37,6 @@ class myconnect{
     int myread(string &res){
         int num=0;
         num=read(sockfd,buffer,buffsize-1);
-        std::cout<<num<<endl;
         while(num>0){
             for(int i=0;i<num;i++){
                 if(buffer[i]=='#'){
@@ -68,7 +67,6 @@ class myconnect{
         }
         buf[length]='#';
         buf[length+1]='\0';
-        cout<<sockfd<<endl;
         if(send(sockfd,buf,length+1,0)<0){
             throw connectExpection("发送失败");
         }

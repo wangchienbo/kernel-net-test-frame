@@ -1,5 +1,7 @@
 #pragma once
 #include "../epoll/M_connect.h"
+#include "../../model/model.h"
+#include "../../common/myExpection/myExpection.h"
 #include <unordered_map>
 class httpClient : public myconnect
 {
@@ -42,7 +44,67 @@ class httpClient : public myconnect
             myread(response);
             return response;
         }
+        string parse(string name, string data){
+            if(name=="addTemplate"){
+                addTemplateReq req;
+                req.json=data;
+                req.parse();
+                req.json ="";
+                req.unparse();
+                return req.json;
+            }
+            else if(name=="runTest"){
+                runTestReq req;
+                req.json=data;
+                req.parse();
+                req.json ="";
+                req.unparse();
+                return req.json;
+            }
+            else if(name=="addCase"){
+                addCaseReq req;
+                req.json=data;
+                req.parse();
+                req.json ="";
+                req.unparse();
+                return req.json;
+            }
+            else if(name=="getTest"){
+                getTestReq req;
+                req.json=data;
+                req.parse();
+                req.json ="";
+                req.unparse();
+                return req.json;
+            }
+            else if(name=="runCase"){
+                runCaseReq req;
+                req.json=data;
+                req.parse();
+                req.json ="";
+                req.unparse();
+                return req.json;
+            }
+            else if(name=="getTemplate"){
+                getTemplateReq req;
+                req.json=data;
+                req.parse();
+                req.json ="";
+                req.unparse();
+                return req.json;
+            }
+            else if(name=="runTemplate"){
+                runTemplateReq req;
+                req.json=data;
+                req.parse();
+                req.json ="";
+                req.unparse();
+                return req.json;
+            }
+            return "";
+        }
         string runRequest(string name, string data){
+            data=parse(name, data);
             string method = name2interface[name].first;
             string path = name2interface[name].second;
             string header = "Content-Length: " + to_string(data.size());

@@ -69,7 +69,8 @@ runTemplateResp runTemplateService(runTemplateReq req){
         }
         try {
             saveRunTemplateReportService(resp, req, getTemplateResp_);
-        } catch (reportNameExistExpection& e) {
+        }
+        catch (const std::exception& e) {
             resp.msg = e.what();
         }
     }

@@ -29,6 +29,18 @@ void runTemplate(HttpRequest& req){
         resp.code = HTTP_INTERNAL_SERVER_ERROR;
         resp.msg = e.what();
     }
+    catch(reportNameExistExpection e){
+        resp.code = HTTP_INTERNAL_SERVER_ERROR;
+        resp.msg = e.what();
+    }
+    catch(fileNotFoundException e){
+        resp.code = HTTP_INTERNAL_SERVER_ERROR;
+        resp.msg = e.what();
+    }
+    catch(const std::exception& e){
+        resp.code = HTTP_INTERNAL_SERVER_ERROR;
+        resp.msg = e.what();
+    }
     resp.unparse();
     req.setResponse(resp.code,resp.json);
     return ;

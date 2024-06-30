@@ -44,6 +44,13 @@ runTestResp runTestService(runTestReq req){
     resp.apiName = req.apiName;
     resp.testResult.responseCode = apiResp->code;
     resp.testResult.responseData = apiResp->data;
+    cout << "expectedOutCome: " << req.expectedOutcome << endl;
+    cout << "response Data: " << resp.testResult.responseData << endl;
+    if (req.expectedOutcome == resp.testResult.responseData) {
+        resp.isTruthValueMatch = "true";
+    } else {
+        resp.isTruthValueMatch = "false";
+    }
     if(req.needReport=="true"){
         if(isFileNameValid(req.reportName)){
             resp.reportName = req.reportName;

@@ -20,5 +20,6 @@ string getTruthValueStore(string testCaseName) {
         string content = readFileContent(dir + "/" + testCaseName + ".txt");
         res = content;
     }
+    cout << "TruthValue: " << res << endl;
     return res;
 }

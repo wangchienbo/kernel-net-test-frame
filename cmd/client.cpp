@@ -31,6 +31,9 @@ std::string argsToJson(const std::string& args) {
         }
     }
     json += "}";
+    if (json == "{}") {
+        return args;
+    }
     return json;
 }
 vector<std::string> extractDataBetweenFlags(const std::string& input, const std::string& flag) {
@@ -118,15 +121,18 @@ int main(int argc, char* argv[]) {
     setpgid(0, 0);
     std::vector<std::pair<std::string, int>> ips;
     vector<string> ips_str;
-    if(argc<2){        
+    cout << "argc:" << argc << endl;
+    if(argc>=2){        
         for(int i=1;i<argc;i++){
             ips_str.push_back(argv[i]);
         }
     }else{
         ips_str.push_back("127.0.0.1:8080");
+        argc = ips_str.size();
     }
-    for (int i = 1; i < argc; i++) {
-        std::string arg = argv[i];
+    cout<<"ips_str size: "<<ips_str.size()<<endl;
+    for (int i = 0; i < ips_str.size(); i++) {
+        std::string arg = ips_str[i];
         size_t pos = arg.find(':');
         if (pos != std::string::npos) {
             std::string ip = arg.substr(0, pos);
@@ -175,9 +181,11 @@ int main(int argc, char* argv[]) {
         }
 
         if(inputIps.size()==0&&fileNames.size()==1){
+            cout << "fileName: " << fileNames[0] << endl;
             try{
                 inputDatas.push_back(readFileContent(fileNames[0]));
                 data=inputDatas[0];
+                cout << "inputData:" << data << endl;
             }
             catch(std::exception e){
                 std::cout<<"读取文件失败:"<<e.what()<<"\n";
@@ -261,6 +269,9 @@ int main(int argc, char* argv[]) {
         for (auto& client : clients) {
             string ip=ips[num].first+":"+to_string(ips[num].second);
             try{
+                cout << "runName:" << runName << endl;
+                cout << "data:" << data << endl;
+                cout << "ip:" << ip << endl;
                 string res=client->runRequest(runName, data);
                 Response resp = Response();
                 auto res_map = parse(res);

@@ -4,6 +4,7 @@
 
 getTruthValueResp getTruthValueService(getTruthValueReq req){
     getTruthValueResp resp;
-    resp.data = getTruthValueStore(req.testCaseName);
+    resp.json = getTruthValueStore(req.testCaseName);
+    resp.parse();
     return resp;
 }

@@ -351,7 +351,7 @@ std::string getCurrentTime() {
 
 bool isFileNameValid(const std::string& fileName) {
     // 文件名不允许的字符
-    const std::string invalidChars = "\\/:*?\"<>|";
+    const std::string invalidChars = "\\/*?\"<>|";
 
     // 检查文件名是否为空
     if (fileName.empty()) {
@@ -384,6 +384,81 @@ std::vector<std::string> splitString(const std::string& input, const std::string
     token = input.substr(startPos);
     if (!token.empty()) { // 避免添加空字符串
         result.push_back(token);
+    }
+    return result;
+}
+
+
+std::string queryStrToJson(const std::string& query) {
+    std::stringstream result;
+    std::vector<std::string> pairs;
+    std::string::size_type lastPos = 0, pos = 0;
+
+    // 分割字符串
+    while ((pos = query.find_first_of('&', lastPos)) != std::string::npos) {
+        pairs.push_back(query.substr(lastPos, pos - lastPos));
+        lastPos = pos + 1;
+    }
+    pairs.push_back(query.substr(lastPos));
+
+    // 处理每个键值对
+    bool first = true;
+    result << "{";
+    for (const auto& pair : pairs) {
+        if (!first) {
+            result << ",";
+        } else {
+            first = false;
+        }
+        auto eqPos = pair.find('=');
+        if (eqPos != std::string::npos) {
+            result << "\"" << pair.substr(0, eqPos) << "\":" << pair.substr(eqPos + 1);
+        }
+    }
+    result << "}";
+    if (result.str() == "{}") {
+        return query;
+    }
+    return result.str();
+}
+
+// std::string jsonToQueryStr(const std::string& json) {
+//     std::string result;
+//     std::string::size_type lastPos = 0, pos = 0;
+//     while ((pos = json.find_first_of(':', lastPos)) != std::string::npos) {
+//         std::string key = json.substr(lastPos + 1, pos - lastPos - 2);
+//         lastPos = pos + 1;
+//         pos = json.find_first_of(',', lastPos);
+//         if (pos == std::string::npos) {
+//             pos = json.find_first_of('}', lastPos);
+//         }
+//         std::string value = json.substr(lastPos + 1, pos - lastPos - 2);
+//         if (!result.empty()) {
+//             result += "&";
+//         }
+//         result += key + "=" + value;
+//         lastPos = pos + 1;
+//     }
+//     return result;
+// }
+std::string jsonToQueryStr(const std::string& json) {
+    std::string result;
+    std::string::size_type lastPos = 0, pos = 0;
+    while ((pos = json.find_first_of(':', lastPos)) != std::string::npos) {
+        // 调整以去除键的双引号
+        std::string key = json.substr(lastPos + 2, pos - lastPos - 3);
+        lastPos = pos + 1;
+        pos = json.find_first_of(',', lastPos);
+        if (pos == std::string::npos) {
+            pos = json.find_first_of('}', lastPos);
+        }
+        // 调整以去除值的双引号
+        std::string value = json.substr(lastPos + 1, pos - lastPos - 2);
+        if (!result.empty()) {
+            result += "&";
+        }
+        result += key + "=" + value;
+        lastPos = pos + 1;
     }
     return result;
 }

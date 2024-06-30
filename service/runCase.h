@@ -2,6 +2,7 @@
 #include "myTest/testApi/allApi.h"
 #include "runTest.h"
 #include "saveReport.h"
+#include "getTruthValue.h"
 runCaseResp runCaseService(runCaseReq req){
     runCaseResp resp;
     std::map<std::string, std::shared_ptr<TestCase>> test_cases;
@@ -13,12 +14,22 @@ runCaseResp runCaseService(runCaseReq req){
         throw notFoundCaseExpection("Test case not found: " + req.testCaseName);
         return resp;
     }
+    // 获取真值
+    getTruthValueReq getTruthValueReq_;
+    getTruthValueReq_.testCaseName = req.testCaseName;
+    auto getTruthValueResp_ = getTruthValueService(getTruthValueReq_);
+
     req_.json = allCase[0];
     req_.parse();
     req_.needReport = "false";
+    req_.expectedOutcome = getTruthValueResp_.expectedOutcome;
+    cout << "expectedOutCome: " << req_.expectedOutcome << endl;
     runTestResp rtr = runTestService(req_);
     resp.testCaseName = req.testCaseName;
     resp.testResult = rtr.testResult;
+    resp.isTruthValueMatch = rtr.isTruthValueMatch;
+    
+    // 生成报告
     if(req.needReport=="true"){
         if(isFileNameValid(req.reportName)){
             resp.reportName = req.reportName;

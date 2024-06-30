@@ -9,11 +9,11 @@ addCaseResp addCaseService(addCaseReq& req){
     req.unparse();
     string requestBody = req.json;
     addAddCaseStore(req.apiName,req.testCaseName,requestBody);
-    addTruthValueReq addTruthValueReq;
-    addTruthValueReq.expectedOutcome = req.expectedOutcome;
-    addTruthValueReq.testCaseName = req.testCaseName;
-    addTruthValueReq.unparse();
-    addTruthValueService(addTruthValueReq);
+    addTruthValueReq addTruthValueReq_;
+    addTruthValueReq_.expectedOutcome = req.expectedOutcome;
+    addTruthValueReq_.testCaseName = req.testCaseName;
+    addTruthValueReq_.unparse();
+    addTruthValueService(addTruthValueReq_);
     resp.caseId = req.caseId;
     return resp;
 }

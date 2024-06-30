@@ -36,15 +36,18 @@ class runCaseResp:public apiRunResp{
         string testCaseName;
         runResult testResult;
         string reportName;
+        string isTruthValueMatch;
         void parse(){
             SET_PARAMS(testCaseName ,true);
             SET_PARAMS_CLASS(testResult ,true);
             SET_PARAMS(reportName ,false);
+            SET_PARAMS(isTruthValueMatch ,false);
         }
         void unparse(){
             SET_OUTPUT(testCaseName);
             SET_OUTPUT_CLASS(testResult);
             SET_OUTPUT(reportName);
+            SET_OUTPUT(isTruthValueMatch);
             SET_OUTPUT(msg);
             END_UNPARSE
         }

@@ -19,8 +19,11 @@ class getTruthValueReq : public apiRunReq {
 };
 class getTruthValueResp:public apiRunResp{
     public:
-        string data;
+        string testCaseName;
+        string expectedOutcome;
         void parse(){
+            SET_PARAMS(testCaseName ,true);
+            SET_PARAMS(expectedOutcome ,true);
         }
         void unparse(){
             json.clear();

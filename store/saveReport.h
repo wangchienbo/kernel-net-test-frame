@@ -9,6 +9,7 @@
 void saveReportStore(std::string reportName, std::string report) {
     std::cout << "Saving Report: " << endl;
     string path="reports";
+    reportName += ".txt";
     if(is_directory_exists(path) == false) {
         create_directory(path);
     }

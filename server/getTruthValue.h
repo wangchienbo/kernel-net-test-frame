@@ -31,7 +31,7 @@ void getTruthValue(HttpRequest& req) {
         resp.code = 404;
         resp.msg = e.what();
     }
-    cout << "getTruthValueResp: " << resp.data << endl;
+    cout << "getTruthValueResp: " << resp.json << endl;
     resp.unparse();
     req.setResponse(resp.code, resp.json);
     return ;

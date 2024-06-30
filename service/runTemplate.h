@@ -25,6 +25,7 @@ vector<runCaseResp> runCaseList(vector<string>& reqs,int type){
                             failNum++;
                         }
                     } catch (const std::exception& e) {
+                        resp_.testResult.responseCode = RunnningErrorCode;
                         failNum++;
                     }
                 }

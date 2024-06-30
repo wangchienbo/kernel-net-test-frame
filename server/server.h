@@ -7,3 +7,4 @@
 #include "getTemplate.h"
 #include "runTemplate.h"
 #include "addTruthValue.h"
+#include "getTruthValue.h"

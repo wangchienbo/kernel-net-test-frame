@@ -9,3 +9,4 @@
 #include "runTemplate.h"
 #include "getTemplate.h"
 #include "addTruthValue.h"
+#include "getTruthValue.h"

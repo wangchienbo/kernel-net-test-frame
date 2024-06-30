@@ -21,10 +21,14 @@ vector<string> getTestStore(string apiName, string testCaseName) {
         string apiName_ = case2apiName::get_instance().getdata(testCaseName);
         cout << "apiName_: " << apiName_ << endl;
         if (apiName_ == "") {
+            cout << "apiName_ is empty" << endl;
             throw fileNotFoundException(CASE_NOT_EXIST);
         }
+        cout << "正在读取文件" << dir + "/" + apiName_ + "/" + testCaseName + ".txt" << endl;
         if (is_file_exists(dir + "/" + apiName_ + "/" + testCaseName + ".txt")) {
+            cout << "path: " << dir + "/" + apiName_ + "/" + testCaseName + ".txt" << endl;
             string content = readFileContent(dir + "/" + apiName_ + "/" + testCaseName + ".txt");
+            cout << "content: " << content << endl;
             res.push_back(content);
         }
         cout<<"res: "<<res.size()<<endl;

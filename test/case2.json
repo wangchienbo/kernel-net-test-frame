@@ -1,0 +1,11 @@
+{
+    "testCaseName": "SendData1",
+    "apiName": "SendData",
+    "requestBody": {
+        "targetIp":"127.0.0.1",
+        "targetPort":8060,
+        "dataSize":100
+    },
+    "preconditions": [],
+    "expectedOutcome": "1"
+  }

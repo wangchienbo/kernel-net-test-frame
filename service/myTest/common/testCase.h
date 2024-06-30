@@ -24,6 +24,7 @@ public:
         bool isSucess=startTest();
         TearDown();
         auto output_ = this->getOutput();
+        cout<<"out:"<<output_->json<<endl;
         if(isSucess){
             resp->code = SUCCESSCode;
             output_->unparse();
@@ -31,7 +32,9 @@ public:
         } else {
             resp->code = testErrorCode;
         }
+        cout<<output_->json<<endl;
         resp->data = output_->json;
+        resp->isRunning = false;
         return resp;
     }
     string json;

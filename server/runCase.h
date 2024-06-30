@@ -3,6 +3,7 @@
 #include "../service/service.h"
 void runCase(HttpRequest& req){
     runCaseReq req_;
+    req_.fd=req.fd;
     runCaseResp resp;
     req_.json = req.getBody();
     try{

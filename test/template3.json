@@ -1,6 +1,6 @@
 {
-    "templateName": "template6",
-    "singleTestCases": ["SendData1"],
+    "templateName": "template4",
+    "singleTestCases": ["SendData1","ReceiveData1"],
     "performanceTestCases": [],
     "safeTestCases": [],
     "compatibilityTestCases": [],

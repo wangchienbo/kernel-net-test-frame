@@ -13,4 +13,5 @@ class apiRunResp
         string data;
         string msg;
         string json;
+        bool isRunning=true;
 };

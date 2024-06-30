@@ -28,6 +28,7 @@ class httpClient : public myconnect
         }
         string Post(string path, string data, string header){
             string req = "POST " + path + " HTTP/1.1\r\n" + header + "\r\n\r\n" + data;
+            cout << "req:" << req << endl;
             mywrite(req);
             string response="";
             myread(response);

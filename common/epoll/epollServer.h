@@ -3,6 +3,7 @@
 #include "messageQueue.h"
 #include "messageThreadPool.h"
 #include "responseThreadPool.h"
+#include "../fdStatus.h"
 
 class epollServer {
 public:
@@ -65,9 +66,11 @@ public:
                 exit(EXIT_FAILURE);
             }
             for (int i = 0; i < num_fds; ++i) {
+                
                 if ((events[i].events & EPOLLERR) ||
                     (events[i].events & EPOLLHUP) ||
                     (!(events[i].events & EPOLLIN))) {
+                    fdStatus::get_instance().closedata(events[i].data.fd);
                     fprintf(stderr, "连接已关闭");
                     close(events[i].data.fd);
                     continue;
@@ -93,6 +96,7 @@ public:
                     cout<<listenfd<<endl;
                     cout<<events[i].data.fd<<endl;
                     pool->addTask(events[i].data.fd);
+                    fdStatus::get_instance().setdata(events[i].data.fd, true);
                 }
             }
         }

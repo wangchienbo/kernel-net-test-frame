@@ -5,6 +5,7 @@
 // extern void AddTest_(const HttpRequest& req);
 void runTest(HttpRequest& req){
     runTestReq req_;
+    req_.fd = req.fd;
     runTestResp resp;
     req_.json = req.getBody();
     try{

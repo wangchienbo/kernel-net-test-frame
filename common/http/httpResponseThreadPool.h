@@ -84,7 +84,7 @@ class myResponseThreadPool: public ResponseThreadPool {
             body = std::string(std::istreambuf_iterator<char>(sstr), {});
             std::cout << "body: " << body << std::endl;
         }
-        Response processResult(pair<int,std::vector<uint8_t>> res){
+        Response processResult(pair<int,std::vector<uint8_t>> res, int fd){
             HttpResponse result;
             // process the result
             cout<<res.second.size()<<endl;
@@ -99,6 +99,7 @@ class myResponseThreadPool: public ResponseThreadPool {
             cout<<"解析"<< str <<endl;
             parse(str);
             HttpRequest req;
+            req.fd = fd;
             cout<<"解析完毕"<<endl;
             cout << "method: " << method << endl;
             if(method == "GET"){

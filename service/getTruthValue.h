@@ -4,6 +4,7 @@
 
 getTruthValueResp getTruthValueService(getTruthValueReq req){
     getTruthValueResp resp;
+    cout << "getTruthValueService" << endl;
     resp.json = getTruthValueStore(req.testCaseName);
     resp.parse();
     return resp;

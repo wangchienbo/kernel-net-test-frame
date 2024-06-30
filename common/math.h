@@ -11,6 +11,7 @@
 #include <chrono>
 #include <sstream>
 #include <iomanip>
+#include "fdStatus.h"
 #define SET_PARAMS(key, required) setParams(&key, json, #key, required)
 #define SET_PARAMS_CLASS(key, required) setParamsClass(key, json, #key, required)
 #define SET_PARAMS_LIST(key, required) setParamsList(key, json, #key, required)
@@ -322,6 +323,7 @@ bool is_directory_exists(const std::string& path) {
     }
 }
 bool is_file_exists(const std::string& path) {
+    cout<<"path: "<<path<<endl;
     std::ifstream file(path);
     return file.good();
 }
@@ -461,4 +463,7 @@ std::string jsonToQueryStr(const std::string& json) {
         lastPos = pos + 1;
     }
     return result;
+}
+bool isFdOpen(int fd) {
+    return fdStatus::get_instance().getdata(fd);
 }

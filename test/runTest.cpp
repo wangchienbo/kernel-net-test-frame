@@ -4,7 +4,7 @@ int main(){
     httpClient myclient("127.0.0.1",8080);
     myclient.init();
     myclient.run();
-    string json=readFileContent("runTest.json");
+    string json=readFileContent("runTest2.json");
     auto resp=myclient.Post("/runTest",json,{});
     cout<<resp<<endl;
     return 0;

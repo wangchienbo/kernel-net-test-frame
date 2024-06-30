@@ -1,0 +1,10 @@
+{
+    "apiName":"SendData",
+    "needReport":true,
+    "requestBody":{
+        "targetIp":"127.0.0.1",
+        "targetPort":8060,
+        "dataSize":100
+    },
+    "reportName":"report2.json"
+}

@@ -4,6 +4,7 @@
 
 void runTemplate(HttpRequest& req){
     runTemplateReq req_;
+    req_.fd=req.fd;
     runTemplateResp resp;
     req_.json = req.getBody();
     try{

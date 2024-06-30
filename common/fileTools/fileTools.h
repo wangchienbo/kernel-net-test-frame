@@ -12,9 +12,6 @@
 
 const int limitSizeWithFile = 1024 * 10; // 10KB
 std::string readFileContent(const std::string& filePath) {
-    if(isFileNameValid(filePath)){
-        throw fileNameValidExpection("file name is invalid:"+filePath);
-    }
     if(!is_file_exists(filePath)){
         throw fileNotFoundException("file not found:"+filePath);
     }

@@ -34,7 +34,28 @@ runTestResp runTestService(runTestReq req){
     }
     else{
         try {
-            apiResp = test_cases[req.apiName]->run(req.requestBody);
+            apiResp = new apiRunResp();
+            thread t1([&]{
+                apiResp=test_cases[req.apiName]->run(req.requestBody);
+            });
+            t1.detach();
+
+            while(apiResp->isRunning&&isFdOpen(req.fd)){
+                cout<<"t1 joinable: "<<t1.joinable()<<endl;
+                cout<<isFdOpen(req.fd)<<endl;
+                cout<<apiResp->isRunning<<endl;
+                sleep(1);
+            }
+            if(isFdOpen(req.fd))cout<<"执行结束"<<endl;
+            cout<<isFdOpen(req.fd)<<endl;
+            cout<<"t1 joinable: "<<endl;
+            test_cases[req.apiName]->TearDown();
+            if(!isFdOpen(req.fd)){
+                cout << "fd closed" << endl;
+                throw connectExpection("fd closed");
+            }else{
+                cout << "fd open" << endl;
+            }
         } catch (const std::exception& e) {
             apiResp = new apiRunResp();
             apiResp->code = RequestErrorCode;
@@ -52,7 +73,7 @@ runTestResp runTestService(runTestReq req){
         resp.isTruthValueMatch = "false";
     }
     if(req.needReport=="true"){
-        if(isFileNameValid(req.reportName)){
+        if(!isFileNameValid(req.reportName)){
             resp.reportName = req.reportName;
         } else {
             resp.reportName = req.apiName + "_" + getCurrentTime();

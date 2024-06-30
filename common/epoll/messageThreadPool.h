@@ -15,13 +15,19 @@ using namespace std;
 std::vector<uint8_t> readFromFd(int fd) {
     std::vector<uint8_t> buffer;
     uint8_t byte;
-
-    while (read(fd, &byte, 1) == 1) {
+    int f=read(fd, &byte, 1);
+    while (f > 0) {
         if (byte == '#') {
             break;
         }
         buffer.push_back(byte);
+        f=read(fd, &byte, 1);
     }
+    cout<<f<<endl;
+    if(f==0){
+        fdStatus::get_instance().closedata(fd);
+    }
+    cout<<"read from fd,byte size : "<<buffer.size() <<endl;
     return buffer;
 }
 

@@ -13,6 +13,7 @@ class HttpRequest {
 
     public:
         HttpResponse response;
+        int fd;
         std::string getMethod() const;
         void parse_request(const std::string& request) {
         }

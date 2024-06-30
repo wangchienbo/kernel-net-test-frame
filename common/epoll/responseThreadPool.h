@@ -40,13 +40,13 @@ class ResponseThreadPool{
                         }
                         auto req = resultQueue.getResult();
                         condition.notify_one();
-                        Response result = processResult(req);
+                        Response result = processResult(req,req.first);
                         sendRes(req.first,result);
                     }
                 });
             }
         }
-        virtual Response processResult(pair<int,std::vector<uint8_t>> res){
+        virtual Response processResult(pair<int,std::vector<uint8_t>> res, int fd){
         }
         virtual void sendRes(int fd, Response res){
         }

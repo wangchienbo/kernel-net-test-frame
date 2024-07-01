@@ -121,7 +121,7 @@ int main(int argc, char* argv[]) {
     setpgid(0, 0);
     std::vector<std::pair<std::string, int>> ips;
     vector<string> ips_str;
-    cout << "argc:" << argc << endl;
+    std::cout << "argc:" << argc << endl;
     if(argc>=2){        
         for(int i=1;i<argc;i++){
             ips_str.push_back(argv[i]);
@@ -130,7 +130,7 @@ int main(int argc, char* argv[]) {
         ips_str.push_back("127.0.0.1:8080");
         argc = ips_str.size();
     }
-    cout<<"ips_str size: "<<ips_str.size()<<endl;
+    std::cout<<"ips_str size: "<<ips_str.size()<<endl;
     for (int i = 0; i < ips_str.size(); i++) {
         std::string arg = ips_str[i];
         size_t pos = arg.find(':');
@@ -181,11 +181,11 @@ int main(int argc, char* argv[]) {
         }
 
         if(inputIps.size()==0&&fileNames.size()==1){
-            cout << "fileName: " << fileNames[0] << endl;
+            std::cout << "fileName: " << fileNames[0] << endl;
             try{
                 inputDatas.push_back(readFileContent(fileNames[0]));
                 data=inputDatas[0];
-                cout << "inputData:" << data << endl;
+                std::cout << "inputData:" << data << endl;
             }
             catch(std::exception e){
                 std::cout<<"读取文件失败:"<<e.what()<<"\n";
@@ -196,7 +196,7 @@ int main(int argc, char* argv[]) {
         if(inputIps.size()!=0){
             for(int i=0;i<inputIps.size();i++){
                 try{
-                    cout<<"正在读取文件："<<fileNames[i]<<endl;
+                    std::cout<<"正在读取文件："<<fileNames[i]<<endl;
                     inputDatas.push_back(readFileContent(fileNames[i]));
                 }
                 catch(fileNameValidExpection e){
@@ -220,79 +220,103 @@ int main(int argc, char* argv[]) {
             continue;
         }
         int num=0;
-        cout<<"开始执行\n"<<inputIps.size()<<endl;
-
+        std::cout<<"开始执行\n"<<inputIps.size()<<endl;
+        vector<pair<string,string> > results;
+        vector<thread> threads;
+        mutex m;
         if(inputIps.size()!=0){
             for(int i=0;i<inputIps.size();i++){
-                string ip_port=inputIps[i];
-                string inputData=inputDatas[i];
-                try{
-                    int idx=0;
-                    for(int j=0;j<ips.size();j++){
-                        if(ips[j].first+":"+to_string(ips[j].second)==ip_port){
-                            idx=j;
-                            break;
+                threads.emplace_back([&results,clients,ips,inputIps,inputDatas,i,runName,&m](){
+                    string result="";
+                    string ip_port=inputIps[i];
+                    string inputData=inputDatas[i];
+                    try{
+                        int idx=0;
+                        for(int j=0;j<ips.size();j++){
+                            if(ips[j].first+":"+to_string(ips[j].second)==ip_port){
+                                idx=j;
+                                break;
+                            }
+                        }
+                        if(idx>=ips.size()){
+                            throw connectExpection("ip不存在:"+ip_port);
+                            return;
+                        }
+                        string ip=ips[idx].first+":"+to_string(ips[idx].second);
+                        auto client=clients[idx];
+                        string res=client->runRequest(runName, inputData);
+                        Response resp = Response();
+                        auto res_map = parse(res);
+                        if (res_map["code"] == "200") {
+                            result="ip为："+ip+"执行成功\n";
+                            result+="结果为："+res_map["body"];
+                        } else {
+                            result="ip为："+ip+"执行失败\n";
+                            result+="结果为："+res_map["body"];
                         }
                     }
-                    if(idx>=ips.size()){
-                        std::cout<<"ip不存在:"<<ip_port<<"\n";
-                        break;
+                    catch(connectExpection e){
+                        result+="ip为："+ip_port+"连接失败:"+e.what()+"\n";
                     }
-                    string ip=ips[idx].first+":"+to_string(ips[idx].second);
-                    auto client=clients[idx];
-                    string res=client->runRequest(runName, inputData);
-                    Response resp = Response();
-                    auto res_map = parse(res);
-                    if (res_map["code"] == "200") {
-                        std::cout << "ip为："<<ip<<"执行成功\n";
-                        std::cout << "结果为：" << res_map["body"]<< endl;
-                    } else {
-                        std::cout << "ip为："<<ip<<"执行失败\n";
-                        std::cout << "结果为：" << res_map["body"]<< endl;
+                    catch(parseExpection e){
+                        result+="ip为："+ip_port+"解析失败:"+e.what()+"\n";
                     }
-                }
-                catch(connectExpection e){
-                    std::cout<<"ip为："<<ip_port<<"连接失败:"<<e.what()<<"\n";
-                }
-                catch(parseExpection e){
-                    std::cout<<"ip为："<<ip_port<<"解析失败:"<<e.what()<<"\n";
-                }
-                catch(std::exception e){
-                    std::cout<<"ip为："<<ip_port<<"执行失败:"<<e.what()<<"\n";
-                }
-                num++;
+                    catch(std::exception e){
+                        result+="ip为："+ip_port+"执行失败:"+e.what()+"\n";
+                    }
+                    m.lock();
+                    results.push_back(make_pair(ip_port,result));
+                    m.unlock();
+                });
+            }
+            for(auto& t:threads){
+                t.join();
+            }
+            for(auto& r:results){
+                std::cout<<"主机"<<r.first<<"返回结果是："<<endl;
+                std::cout<<r.second<<endl;
             }
             continue;
         }
         data=argsToJson(data);
-        cout<<data<<endl;
+
         for (auto& client : clients) {
-            string ip=ips[num].first+":"+to_string(ips[num].second);
-            try{
-                cout << "runName:" << runName << endl;
-                cout << "data:" << data << endl;
-                cout << "ip:" << ip << endl;
-                string res=client->runRequest(runName, data);
-                Response resp = Response();
-                auto res_map = parse(res);
-                if (res_map["code"] == "200") {
-                    std::cout << "ip为："<<ip<<"执行成功\n";
-                    std::cout << "结果为：" << res_map["body"]<< endl;
-                } else {
-                    std::cout << "ip为："<<ip<<"执行失败\n";
-                    std::cout << "结果为：" << res_map["body"]<< endl;
+            threads.emplace_back([&client,runName,data,ips,num,&results,&m](){
+                string result="";
+                string ip=ips[num].first+":"+to_string(ips[num].second);
+                try{
+                    string res=client->runRequest(runName, data);
+                    Response resp = Response();
+                    auto res_map = parse(res);
+                    if (res_map["code"] == "200") {
+                        result="ip为："+ip+"执行成功\n";
+                        result+="结果为："+res_map["body"];
+                    } else {
+                        result="ip为："+ip+"执行失败\n";
+                        result+="结果为："+res_map["body"];
+                    }
                 }
-            }
-            catch(connectExpection e){
-                std::cout<<"ip为："<<ip<<"连接失败:"<<e.what()<<"\n";
-            }
-            catch(parseExpection e){
-                std::cout<<"ip为："<<ip<<"解析失败:"<<e.what()<<"\n";
-            }
-            catch(std::exception e){
-                std::cout<<"ip为："<<ip<<"执行失败:"<<e.what()<<"\n";
-            }
+                catch(connectExpection e){
+                    result+="ip为："+ip+"连接失败:"+e.what()+"\n";
+                }
+                catch(parseExpection e){                
+                    result+="ip为："+ip+"解析失败:"+e.what()+"\n";
+                }
+                catch(std::exception e){
+                    result+="ip为："+ip+"执行失败:"+e.what()+"\n";
+                }
+                m.lock();
+                results.push_back(make_pair(ip,result));
+                m.unlock();
+            });
             num++;
+        }
+        for(auto& t:threads){
+            t.join();
+        }
+        for(auto& r:results){
+            std::cout<<"主机"<<r.first<<"返回结果是："<<endl;
+            std::cout<<r.second<<endl;
         }
     }
 

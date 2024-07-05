@@ -2,7 +2,7 @@
 #include "../common/common.h"
 #include "../model/model.h"
 #include "../service/service.h"
-void getTemplate(HttpRequest& req) {
+void getTemplate(HttpRequest &req) {
     cout << "getTemplate" << endl;
     getTemplateReq req_;
     req_.json = req.getBody();
@@ -10,12 +10,12 @@ void getTemplate(HttpRequest& req) {
     try {
         req_.parse();
 
-    } catch(parseExpection e) {
+    } catch (parseExpection e) {
         resp.code = 400;
         resp.msg = e.what();
         resp.unparse();
         req.setResponse(resp.code, resp.json);
-        return ;
+        return;
     }
     try {
         resp = getTemplateService(req_);
@@ -23,7 +23,7 @@ void getTemplate(HttpRequest& req) {
     } catch (parseExpection e) {
         resp.code = 400;
         resp.msg = e.what();
-        resp.msg="template format parse error"+resp.msg;
+        resp.msg = "template format parse error" + resp.msg;
     } catch (connectExpection e) {
         resp.code = 500;
         resp.msg = e.what();
@@ -34,5 +34,5 @@ void getTemplate(HttpRequest& req) {
     cout << "getTemplateResp: " << resp.data.size() << endl;
     resp.unparse();
     req.setResponse(resp.code, resp.json);
-    return ;
+    return;
 }

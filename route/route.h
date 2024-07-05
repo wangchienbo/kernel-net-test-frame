@@ -1,7 +1,7 @@
 #pragma once
 #include "../common/http/http.h"
 #include "../server/server.h"
-void register_(HttpServer* httpserv){
+void register_(HttpServer *httpserv) {
     cout << "Registering caseName2apiNameMap" << endl;
     case2apiName::get_instance().init();
     cout << "Registering routes" << endl;

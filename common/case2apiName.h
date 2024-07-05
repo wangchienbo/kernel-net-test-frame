@@ -16,35 +16,35 @@ private:
 
 public:
     // 获取单例实例的静态方法
-    static case2apiName& get_instance() {
+    static case2apiName &get_instance() {
         static case2apiName instance;
         return instance;
     }
-    void init(){
-        cout<<"init case2apiName"<<endl;
-        if(is_directory_exists("cases") == false){
+    void init() {
+        cout << "init case2apiName" << endl;
+        if (is_directory_exists("cases") == false) {
             return;
         }
         vector<string> filenames = readDirectoryDirNames("cases");
-        for(auto filename: filenames){
-            auto caseNames = readDirectoryFilenames("cases/"+filename);
-            for(auto caseName: caseNames){
-                caseName=caseName.substr(0,caseName.find("."));
-                cout<<"caseName:"<<caseName<<endl;
+        for (auto filename : filenames) {
+            auto caseNames = readDirectoryFilenames("cases/" + filename);
+            for (auto caseName : caseNames) {
+                caseName = caseName.substr(0, caseName.find("."));
+                cout << "caseName:" << caseName << endl;
                 dataMap[caseName] = filename;
             }
         }
     }
-    string getdata(string key){
+    string getdata(string key) {
         std::lock_guard<std::mutex> lock(mapLock);
-        if(dataMap.find(key) == dataMap.end()){
+        if (dataMap.find(key) == dataMap.end()) {
             return "";
         }
         return dataMap[key];
     }
-    bool setdata(string key, string value){
+    bool setdata(string key, string value) {
         std::lock_guard<std::mutex> lock(mapLock);
-        if (dataMap.find(key) != dataMap.end()){
+        if (dataMap.find(key) != dataMap.end()) {
             return false;
         }
         dataMap[key] = value;

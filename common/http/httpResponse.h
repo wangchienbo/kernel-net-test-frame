@@ -9,13 +9,11 @@ const string SERVER_NOT_FOUND = "Server Not Found";
 const string INVALID_PARAM = "Invalid Param";
 const string NTERNAL_SERVER_ERROR = "Internal Server Error";
 
-
 map<int, string> code2msg = {
     {HTTP_OK, SUCCESS},
     {HTTP_NOT_FOUND, SERVER_NOT_FOUND},
     {HTTP_INTERNAL_SERVER_ERROR, NTERNAL_SERVER_ERROR},
-    {HTTP_BAD_REQUEST, INVALID_PARAM}
-};
+    {HTTP_BAD_REQUEST, INVALID_PARAM}};
 const string CASE_NOT_EXIST = "Case not exist";
-class HttpResponse : public Response{
+class HttpResponse : public Response {
 };

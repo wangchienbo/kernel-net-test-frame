@@ -26,7 +26,7 @@ public:
         std::unique_lock<std::mutex> lock(mutex_);
         return queue_.empty();
     }
-    static MessageQueue& Instance() {
+    static MessageQueue &Instance() {
         static MessageQueue instance;
         return instance;
     }

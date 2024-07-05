@@ -3,7 +3,7 @@
 #include "../model/model.h"
 #include "../service/service.h"
 
-void getTruthValue(HttpRequest& req) {
+void getTruthValue(HttpRequest &req) {
     cout << "getTruthValue" << endl;
     getTruthValueReq req_;
     req_.json = req.getBody();
@@ -11,12 +11,12 @@ void getTruthValue(HttpRequest& req) {
     try {
         req_.parse();
 
-    } catch(parseExpection e) {
+    } catch (parseExpection e) {
         resp.code = 400;
         resp.msg = e.what();
         resp.unparse();
         req.setResponse(resp.code, resp.json);
-        return ;
+        return;
     }
     try {
         resp = getTruthValueService(req_);
@@ -34,5 +34,5 @@ void getTruthValue(HttpRequest& req) {
     cout << "getTruthValueResp: " << resp.json << endl;
     resp.unparse();
     req.setResponse(resp.code, resp.json);
-    return ;
+    return;
 }

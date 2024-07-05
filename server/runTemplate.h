@@ -2,47 +2,41 @@
 #include "../model/model.h"
 #include "../service/service.h"
 
-void runTemplate(HttpRequest& req){
+void runTemplate(HttpRequest &req) {
     runTemplateReq req_;
-    req_.fd=req.fd;
+    req_.fd = req.fd;
     runTemplateResp resp;
     req_.json = req.getBody();
-    try{
+    try {
         req_.parse();
-    }
-    catch(parseExpection e){
+    } catch (parseExpection e) {
         resp.code = HTTP_BAD_REQUEST;
         resp.msg = e.what();
         resp.unparse();
-        req.setResponse(resp.code,resp.json);
-        return ;
+        req.setResponse(resp.code, resp.json);
+        return;
     }
     try {
         resp = runTemplateService(req_);
         resp.code = HTTP_OK;
-        if(resp.msg.empty()) resp.msg = "runTemplate success";
-    }
-    catch(parseExpection e){
+        if (resp.msg.empty()) resp.msg = "runTemplate success";
+    } catch (parseExpection e) {
         resp.code = HTTP_BAD_REQUEST;
         resp.msg = e.what();
-    }
-    catch(fileNameValidExpection e){
+    } catch (fileNameValidExpection e) {
         resp.code = HTTP_INTERNAL_SERVER_ERROR;
         resp.msg = e.what();
-    }
-    catch(reportNameExistExpection e){
+    } catch (reportNameExistExpection e) {
         resp.code = HTTP_INTERNAL_SERVER_ERROR;
         resp.msg = e.what();
-    }
-    catch(fileNotFoundException e){
+    } catch (fileNotFoundException e) {
         resp.code = HTTP_INTERNAL_SERVER_ERROR;
         resp.msg = e.what();
-    }
-    catch(const std::exception& e){
+    } catch (const std::exception &e) {
         resp.code = HTTP_INTERNAL_SERVER_ERROR;
         resp.msg = e.what();
     }
     resp.unparse();
-    req.setResponse(resp.code,resp.json);
-    return ;
+    req.setResponse(resp.code, resp.json);
+    return;
 }

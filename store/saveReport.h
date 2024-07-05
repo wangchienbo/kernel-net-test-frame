@@ -8,18 +8,18 @@
 #include "../common/myExpection/myExpection.h"
 void saveReportStore(std::string reportName, std::string report) {
     std::cout << "Saving Report: " << endl;
-    string path="reports";
+    string path = "reports";
     reportName += ".txt";
-    if(is_directory_exists(path) == false) {
+    if (is_directory_exists(path) == false) {
         create_directory(path);
     }
     cout << "path: " << path << endl;
-    if(!isFileNameValid(reportName)) {
-        throw fileNameValidExpection("Invalid Report Name!, Report Name: "+reportName);
+    if (!isFileNameValid(reportName)) {
+        throw fileNameValidExpection("Invalid Report Name!, Report Name: " + reportName);
     }
-    
-    if(is_file_exists(path+"/"+reportName) == true) {
-        throw reportNameExistExpection("Report Name Exist!, Report Name: "+reportName);
+
+    if (is_file_exists(path + "/" + reportName) == true) {
+        throw reportNameExistExpection("Report Name Exist!, Report Name: " + reportName);
     }
-    writeFileContent(path+"/"+reportName,report,true);
+    writeFileContent(path + "/" + reportName, report, true);
 }

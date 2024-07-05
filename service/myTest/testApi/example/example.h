@@ -11,7 +11,7 @@ API_CLASS {
     output->temp.num = ip.temp.num;
     output->temp.abs = ip.temp.abs;
     output->sd3 = ip.sd3;
-    for(auto temp: ip.temps){
+    for (auto temp : ip.temps) {
         Temp2 temp2;
         temp2.num = temp.num;
         temp2.abs = temp.abs;
@@ -20,7 +20,6 @@ API_CLASS {
     cout << "TestAdd::Run" << endl;
     return 1;
 }
-
 
 void API_NAME::SetUp() {
     // 准备测试环境

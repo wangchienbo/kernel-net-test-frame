@@ -7,5 +7,5 @@
 #include "../common/http/httpResponse.h"
 #include "../common/myExpection/myExpection.h"
 using namespace std;
-void runTestStore(){
+void runTestStore() {
 }

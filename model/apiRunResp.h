@@ -6,12 +6,11 @@ const int SUCCESSCode = 1;
 const int testErrorCode = 2;
 const int RequestErrorCode = 3;
 const int RunnningErrorCode = 4;
-class apiRunResp
-{
-    public:
-        int code;
-        string data;
-        string msg;
-        string json;
-        bool isRunning=true;
+class apiRunResp {
+public:
+    int code;
+    string data;
+    string msg;
+    string json;
+    bool isRunning = true;
 };

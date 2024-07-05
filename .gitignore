@@ -30,3 +30,19 @@
 *.exe
 *.out
 *.app
+
+# MacOS Cache
+.DS_Store
+
+# Xmake cache
+.cache/
+.xmake/
+build/
+makefile
+
+# VScode
+.vscode/
+
+# for compiler
+compile_commands.json
+.cache/

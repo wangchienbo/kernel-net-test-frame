@@ -10,7 +10,7 @@ using namespace std;
 string getTruthValueStore(string testCaseName) {
     string res = "";
     string dir = "truthValues";
-    cout << "getTestStore: "<< testCaseName << endl;
+    cout << "getTestStore: " << testCaseName << endl;
     // casename为空，不执行
     if (testCaseName == "") {
         throw parseExpection(INVALID_PARAM);

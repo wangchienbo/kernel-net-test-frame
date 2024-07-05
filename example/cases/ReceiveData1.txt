@@ -1,0 +1,1 @@
+{"testCaseName":"ReceiveData1","apiName":"ReceiveData","requestBody":"{"targetIp":"127.0.0.1","targetPort":8060,"dataSize":20000}","preconditions":"[]","expectedOutcome":"1","caseId":"ReceiveData_ReceiveData1_2024-06-30T22:47:28"}

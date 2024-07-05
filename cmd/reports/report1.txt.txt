@@ -1,0 +1,12 @@
+Case Name: case1
+Response Code: 1
+Response Result: {"sd1":1,"sd2":2,"temp":{"num":100,"abs":10},"sd3":[1,2,3,4,5],"temps":[{"num":1,"abs":2},{"num":3,"abs":4}]}
+统计: 
+ 1 成功
+, 0 失败
+Case Name: case1
+Response Code: 1
+Response Result: {"sd1":1,"sd2":2,"temp":{"num":100,"abs":10},"sd3":[1,2,3,4,5],"temps":[{"num":1,"abs":2},{"num":3,"abs":4}]}
+统计: 
+ 1 成功
+, 0 失败

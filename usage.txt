@@ -1,0 +1,27 @@
+Sh run.sh cmd/main.cpp运行服务
+Sh run.sh cmd/client.cpp运行client（本机）
+addCase -f case.json
+addCase -ips ip1 ip2 -f file1.json file2.json
+addCase -caseName name1 -apiName apiName1 -requestBody body
+getCase -caseName name1 -apiName apiName1
+getCase -f file.json
+addTemplate -f template.json
+addTemplate -ips ip1 ip2 -f file1.json file2.json
+addTemplate -templateName name1 -singleTestCases [case1, case2] -performanceTestCases [case3, case4] -safeTestCases [case5, case6] -compatibilityTestCases [case7, case8] -templateDescription description -version_number 1.0
+getTemplate -templateName name1
+getTemplate -f file.json
+addTruthValue -f truthValue.json
+addTruthValue -ips ip1 ip2 -f file1.json file2.json
+addTruthValue -testCaseName name1 -expectedOutcome "OK"
+getTruthValue -testCaseName name1
+addTruthValue -f file.json
+addTruthValue -ips ip1 ip2 -f file1.json file2.json
+addTruthValue -testCaseName name1 -expectedOutcome "OK"
+runTest -f test.json
+runTest -ips ip1 ip2 -f file1.json file2.json
+runCase -caseName name1 -apiName apiName1
+runCase -f file.json
+runCase -ips ip1 ip2 -f file1.json file2.json
+runTemplate -templateName name1
+runTemplate -f file.json
+runTemplate -ips ip1 ip2 -f file1.json file2.json

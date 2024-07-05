@@ -1,0 +1,9 @@
+{
+    "templateName": "template2",
+    "singleTestCases": ["case1"],
+    "performanceTestCases": [],
+    "safeTestCases": [],
+    "compatibilityTestCases": [],
+    "templateDescription": "templateDescription2",
+    "version_number": 1
+}

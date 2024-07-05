@@ -1,0 +1,34 @@
+{
+  "testCaseName": "case1",
+  "apiName": "example1",
+  "requestBody": {
+    "sd1": 1,
+    "sd2": 2,
+    "temp": {
+      "num": 100,
+      "abs": 10
+    },
+    "sd3": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "temps": [
+      {
+        "num": 1,
+        "abs": 2
+      },
+      {
+        "num": 3,
+        "abs": 4
+      }
+    ]
+  },
+  "preconditions": [
+    "Network interface up",
+    "Target host reachable"
+  ],
+  "expectedOutcome": "Data sent successfully with throughput > 10MB/s"
+}

@@ -1,12 +1,13 @@
 #pragma once
 #include "../model/model.h"
 #include "../store/store.h"
-string addTemplateService(addTemplateReq req){
+addTemplateResp addTemplateService(addTemplateReq req) {
     addTemplateResp resp;
-    string templateBody = req.json;
-    if(req.testType != "bench" && req.testType != "single"){
-        return "Invalid test type";
-    }
-    addTemplateStore(req.templateName,templateBody);
-    return "Template added successfully";
+    req.templateId = req.templateName + "_" + getCurrentTime();
+    req.json.clear();
+    req.unparse();
+    string requestBody = req.json;
+    addTemplateStore(req.templateName, req.json);
+    resp.templateId = req.templateId;
+    return resp;
 }

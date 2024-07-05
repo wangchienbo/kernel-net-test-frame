@@ -1,0 +1,1 @@
+{"templateName":"template4","singleTestCases":["SendData1","ReceiveData1"],"performanceTestCases":[],"safeTestCases":[],"compatibilityTestCases":[],"templateDescription":"templateDescription2","templateId":"template4_2024-06-30T22:50:10","version_number":1}

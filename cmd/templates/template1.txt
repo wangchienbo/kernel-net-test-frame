@@ -1,0 +1,1 @@
+{"templateName":template2,"singleTestCases":["case1","case2"],"performanceTestCases":["performance1","performance2"],"safeTestCases":["safe1","safe2"],"compatibilityTestCases":["compatibility1","compatibility2"],"templateDescription":templateDescription1,"templateId":template1_2024-06-25T17:36:42,"version_number":1}

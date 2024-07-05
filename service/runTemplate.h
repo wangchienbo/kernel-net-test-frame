@@ -71,7 +71,7 @@ runTemplateResp runTemplateService(runTemplateReq req) {
     resp.safeTestResults = runCaseList(getTemplateResp_.safeTestCases, 3, req.fd);
     resp.compatibilityResults = runCaseList(getTemplateResp_.compatibilityTestCases, 4, req.fd);
     if (req.needReport == "true") {
-        if (!isFileNameValid(req.reportName)) {
+        if (isFileNameValid(req.reportName)) {
             resp.reportName = req.reportName;
         } else {
             resp.reportName = req.templateName + "_" + getCurrentTime();

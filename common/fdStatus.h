@@ -14,22 +14,22 @@ private:
 
 public:
     // 获取单例实例的静态方法
-    static fdStatus& get_instance() {
+    static fdStatus &get_instance() {
         static fdStatus instance;
         return instance;
     }
-    bool getdata(int fd){
+    bool getdata(int fd) {
         std::lock_guard<std::mutex> lock(mapLock);
-        if(dataMap.find(fd) == dataMap.end()){
+        if (dataMap.find(fd) == dataMap.end()) {
             return false;
         }
         return dataMap[fd];
     }
-    void setdata(int fd, bool value){
+    void setdata(int fd, bool value) {
         std::lock_guard<std::mutex> lock(mapLock);
         dataMap[fd] = value;
     }
-    void closedata(int fd){
+    void closedata(int fd) {
         std::lock_guard<std::mutex> lock(mapLock);
         dataMap.erase(fd);
     }

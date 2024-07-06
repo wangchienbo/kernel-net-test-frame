@@ -8,7 +8,7 @@
 #include "../common/myExpection/myExpection.h"
 using namespace std;
 vector<string> getTestStore(string apiName, string testCaseName) {
-    vector<string>res;
+    vector<string> res;
     string dir = "cases";
     cout << "getTestStore: " << apiName << " " << testCaseName << endl;
     // casename为空，不执行
@@ -31,21 +31,21 @@ vector<string> getTestStore(string apiName, string testCaseName) {
             cout << "content: " << content << endl;
             res.push_back(content);
         }
-        cout<<"res: "<<res.size()<<endl;
-        
+        cout << "res: " << res.size() << endl;
+
     } else {
         cout << "apiName: " << apiName << endl;
-        if(is_directory_exists(dir + "/" + apiName) == false) {
+        if (is_directory_exists(dir + "/" + apiName) == false) {
             throw fileNotFoundException(CASE_NOT_EXIST);
         }
         cout << "dir: " << dir + "/" + apiName << endl;
         vector<string> filenames = readDirectoryFilenames(dir + "/" + apiName);
         cout << "filenames: " << filenames.size() << endl;
         vector<string> res;
-        for (const auto& filename : filenames) {
+        for (const auto &filename : filenames) {
             if (filename.find(".txt") != string::npos) {
                 cout << "filename: " << filename << endl;
-                 res.push_back(readFileContent(dir + "/" + apiName + "/" + filename));
+                res.push_back(readFileContent(dir + "/" + apiName + "/" + filename));
             }
         }
         return res;

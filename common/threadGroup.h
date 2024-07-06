@@ -10,9 +10,9 @@ private:
 
 public:
     // 禁止拷贝构造和赋值操作
-    ThreadGroup(const ThreadGroup&) = delete;
-    ThreadGroup& operator=(const ThreadGroup&) = delete;
-    static ThreadGroup& get_instance(){
+    ThreadGroup(const ThreadGroup &) = delete;
+    ThreadGroup &operator=(const ThreadGroup &) = delete;
+    static ThreadGroup &get_instance() {
         static ThreadGroup instance;
         return instance;
     }
@@ -21,20 +21,19 @@ public:
         wait();
     }
 
-
     // 添加线程到组中
-    template<typename Callable, typename... Args>
-    void addThread(string id, Callable&& func, Args&&... args) {
+    template <typename Callable, typename... Args>
+    void addThread(string id, Callable &&func, Args &&...args) {
         std::lock_guard<std::mutex> lock(mutex);
         threads.emplace_back(std::forward<Callable>(func), std::forward<Args>(args)...);
-        if(threadMap.find(id)==threadMap.end()){
-            threadMap[id]=vector<int>();
+        if (threadMap.find(id) == threadMap.end()) {
+            threadMap[id] = vector<int>();
         }
-        threadMap[id].push_back(threads.size()-1);
+        threadMap[id].push_back(threads.size() - 1);
     }
     void wait(string id) {
         std::lock_guard<std::mutex> lock(mutex);
-        for(int i=0;i<threadMap[id].size();i++){
+        for (int i = 0; i < threadMap[id].size(); i++) {
             if (threads[threadMap[id][i]].joinable()) {
                 threads[threadMap[id][i]].join();
             }
@@ -43,8 +42,8 @@ public:
     }
     // 等待所有线程完成
     void wait() {
-        for (std::thread& thread : threads) {
-            cout<<"join thread"<<endl;
+        for (std::thread &thread : threads) {
+            cout << "join thread" << endl;
             if (thread.joinable()) {
                 thread.join();
             }

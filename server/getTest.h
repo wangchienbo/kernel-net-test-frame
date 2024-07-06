@@ -3,7 +3,7 @@
 #include "../model/model.h"
 #include "../service/service.h"
 
-void getTest(HttpRequest& req) {
+void getTest(HttpRequest &req) {
     cout << "getTest" << endl;
     getTestReq req_;
     req_.json = req.getBody();
@@ -11,12 +11,12 @@ void getTest(HttpRequest& req) {
     try {
         req_.parse();
 
-    } catch(parseExpection e) {
+    } catch (parseExpection e) {
         resp.code = 400;
         resp.msg = e.what();
         resp.unparse();
         req.setResponse(resp.code, resp.json);
-        return ;
+        return;
     }
     try {
         resp = getTestService(req_);
@@ -34,5 +34,5 @@ void getTest(HttpRequest& req) {
     cout << "getTestResp: " << resp.data.size() << endl;
     resp.unparse();
     req.setResponse(resp.code, resp.json);
-    return ;
+    return;
 }

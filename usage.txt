@@ -24,4 +24,4 @@ runCase -f file.json
 runCase -ips ip1 ip2 -f file1.json file2.json
 runTemplate -templateName name1
 runTemplate -f file.json
-runTemplate -ips ip1 ip2 -f file1.json file2.json
+runTemplate -ips ip1 ip2 -f file1.json file2.json 

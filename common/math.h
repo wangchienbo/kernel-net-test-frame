@@ -458,7 +458,7 @@ std::string jsonToQueryStr(const std::string &json) {
             result += "&";
         }
         result += key + "=" + value;
-        lastPos = pos + 1;
+        lastPos = pos;
     }
     return result;
 }

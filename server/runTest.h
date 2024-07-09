@@ -20,11 +20,18 @@ void runTest(HttpRequest &req) {
     try {
         resp = runTestService(req_);
         resp.code = HTTP_OK;
+        if(resp.testResult.responseCode != SUCCESSCode){
+            resp.code = HTTP_INTERNAL_SERVER_ERROR;
+            resp.msg = "runTest failed";
+        }
         if (resp.msg.empty()) resp.msg = "runTest success";
     } catch (parseExpection e) {
         resp.code = HTTP_BAD_REQUEST;
         resp.msg = e.what();
     } catch (fileNameValidExpection e) {
+        resp.code = HTTP_INTERNAL_SERVER_ERROR;
+        resp.msg = e.what();
+    } catch (const std::exception &e) {
         resp.code = HTTP_INTERNAL_SERVER_ERROR;
         resp.msg = e.what();
     }

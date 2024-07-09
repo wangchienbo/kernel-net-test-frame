@@ -1,6 +1,9 @@
 #pragma once
+#include "common/myExpection/runningException.h"
 #include "myTest/testApi/allApi.h"
 #include "saveReport.h"
+#include <cstdlib>
+#include <sys/wait.h>
 class ApiRun {
 public:
     apiRunResp *resp;
@@ -32,21 +35,26 @@ runTestResp runTestService(runTestReq req) {
     } else {
         try {
             apiResp = new apiRunResp();
-            thread t1([&] {
-                apiResp = test_cases[req.apiName]->run(req.requestBody);
-            });
-            t1.detach();
-
-            while (apiResp->isRunning && isFdOpen(req.fd)) {
-                cout << "t1 joinable: " << t1.joinable() << endl;
-                cout << isFdOpen(req.fd) << endl;
-                cout << apiResp->isRunning << endl;
-                sleep(1);
+            pid_t pid = fork();
+            if(pid == -1){
+                throw runningException("fork error");
             }
-            if (isFdOpen(req.fd)) cout << "执行结束" << endl;
+            if(pid == 0){
+                apiResp = test_cases[req.apiName]->run(req.requestBody);
+                exit(0);
+            }
+            int status;
+            pid_t wpid = waitpid(pid, &status, WNOHANG|WUNTRACED|WCONTINUED);
+            while(wpid == 0 && isFdOpen(req.fd)){
+                cout << "child process is running" << endl;
+                sleep(1);
+                wpid = waitpid(pid, &status, WNOHANG|WUNTRACED|WCONTINUED);
+            }
+            if (isFdOpen(req.fd)){
+                throw runningException("the service is crashed");
+            }
             cout << isFdOpen(req.fd) << endl;
             cout << "t1 joinable: " << endl;
-            test_cases[req.apiName]->TearDown();
             if (!isFdOpen(req.fd)) {
                 cout << "fd closed" << endl;
                 throw connectExpection("fd closed");
